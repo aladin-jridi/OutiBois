@@ -2,12 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
-// import Login from './AdminLogin'
+import AdminLogin from './AdminLogin'
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
-    {/* <Login/> */}
+    <AdminLogin/>
   </React.StrictMode>,
   document.getElementById('root')
 )
