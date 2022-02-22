@@ -1,7 +1,13 @@
 import "./App.css";
-
+import AdminLogin from './AdminLogin'
 function App() {
-	return <div className='App'>Hello world</div>;
+	return (
+		<BrowserRouter>
+		<Routes>
+			<Route path = '/Admin' element={<AdminLogin/>} ></Route>
+		</Routes>
+		</BrowserRouter>
+	)
 }
 
 export default App;
