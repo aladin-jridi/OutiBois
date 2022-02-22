@@ -1,12 +1,14 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect,  } from "react";
+import {Link , useNavigate } from "react-router-dom";
 
 //prettier ignore
-const AdminLogin = (props) => {
+const AdminLogin = () => {
      const [signin, setSignin] = useState({
           username: "",
-          password: "",    
+          password: ""
      });
+     const naviget = useNavigate()
 
      const signinFN = () => {
           if ( signin.username != 'outibois' ) {
@@ -17,6 +19,7 @@ const AdminLogin = (props) => {
                setSignin({ ...signin, status: "password too short and wrong" })
                else {
                     console.log('done');
+                    naviget('/AdminDADH')
             }
      };
 
