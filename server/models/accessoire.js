@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 
 const accessories = mongoose.Schema(
 	{
-		title: String,
+		name: String,
 		image: Array,
-		ref: String,
 		discription: String,
 	},
 	{ timestamps: true, versionKey: false }
