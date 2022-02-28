@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-const accessories = require("../models/accessoire");
+const Accessories = require("../models/accessoire");
 
 module.exports = {
 	add_accessories: async (req, res) => {
 		try {
 			let accessories = req.body;
-			const savedaccessories = await accessories.create(accessories);
+			const savedaccessories = await Accessories.create(accessories);
 			res.send(savedaccessories);
 		} catch (error) {
 			res.send(error);
@@ -14,7 +14,7 @@ module.exports = {
 	add_many_accessories: async (req, res) => {
 		try {
 			let accessories = req.body.accessories;
-			const savedaccessories = await accessories.insertMany(accessories);
+			const savedaccessories = await Accessories.insertMany(accessories);
 			res.send(savedaccessories);
 		} catch (error) {
 			res.send(error);
@@ -23,7 +23,7 @@ module.exports = {
 	find_one_accessories: async (req, res) => {
 		try {
 			let id = req.params._id;
-			const accessories = await accessories.findById(id);
+			const accessories = await Accessories.findById(id);
 			res.send(accessories);
 		} catch (error) {
 			res.send(error);
@@ -32,7 +32,7 @@ module.exports = {
 	find_many_accessories: async (req, res) => {
 		try {
 			let ids = req.body.ids.map((id) => mongoose.Types.ObjectId(id));
-			const accessories = await accessories.find({
+			const accessories = await Accessories.find({
 				_id: { $in: ids },
 			});
 			res.send(accessories);
@@ -42,7 +42,7 @@ module.exports = {
 	},
 	find_all_accessories: async (req, res) => {
 		try {
-			const accessories = await accessories.find();
+			const accessories = await Accessories.find();
 			res.send(accessories);
 		} catch (error) {
 			res.send(error);
@@ -52,7 +52,7 @@ module.exports = {
 		try {
 			let accessories = req.body;
 			let id = req.params._id;
-			const updatedaccessories = await accessories.findByIdAndUpdate(
+			const updatedaccessories = await Accessories.findByIdAndUpdate(
 				id,
 				accessories
 			);
@@ -64,7 +64,7 @@ module.exports = {
 	delete_one_accessories: async (req, res) => {
 		try {
 			let id = req.params._id;
-			const deletedaccessories = await accessories.findByIdAndRemove(id);
+			const deletedaccessories = await Accessories.findByIdAndRemove(id);
 			res.send(deletedaccessories);
 		} catch (error) {
 			res.send(error);
