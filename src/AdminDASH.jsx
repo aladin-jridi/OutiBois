@@ -1,6 +1,7 @@
 import React, { useState, useEffect,useLayoutEffect } from "react";
 import axios from "axios";
 
+
 function AdminDADH() {
   // $(document).ready(function () {
   //   // Activate tooltip
@@ -27,19 +28,28 @@ function AdminDADH() {
   // });
 
   const [newMachines, setnewMachines] = useState([]);
-
+  const [deleteMachine, setdeleteMachine] = useState(null);
+function fetchData(){axios
+  .get("http://localhost:5000/api/newMachine/findAllMachine")
+  .then(({ data }) => {
+    console.log(data);
+    setnewMachines(data);
+  });}
   useLayoutEffect(() => {
-    axios
-      .get("http://localhost:5000/api/newMachine/findAllMachine")
-      .then(({ data }) => {
-        console.log(data);
-        setnewMachines(data);
-      });
+    fetchData()
     },[]);
   useEffect(()=>{
-    console.log(newMachines);
   })
-
+  function remove(id){
+   
+    axios.delete(`http://localhost:5000/api/newMachine/deleteOnenNewMachine/${id}`)
+  .then(() =>{
+    fetchData()
+  }) 
+  .catch((err) =>{
+   console.log(err);
+  })
+  }
   return (
     <div className="10">
       <div className="container-xl">
@@ -125,6 +135,7 @@ function AdminDADH() {
                            data-toggle="modal"
                          >
                            <i
+                           onClick={()=>{setdeleteMachine(machine._id)}}
                              className="material-icons"
                              data-toggle="tooltip"
                              title="Delete"
@@ -147,7 +158,7 @@ function AdminDADH() {
       <div id="addEmployeeModal" className="modal fade">
         <div className="modal-dialog">
           <div className="modal-content">
-            <form>
+          <form>
               <div className="modal-header">
                 <h4 className="modal-title">Add Machines</h4>
                 <button
@@ -264,7 +275,8 @@ function AdminDADH() {
                   value="Cancel"
                 />
                 <input
-                  type="submit"
+                onClick={()=>{remove(deleteMachine);}}
+                  type="button"
                   className="btn btn-danger"
                   value="Delete"
                 />
