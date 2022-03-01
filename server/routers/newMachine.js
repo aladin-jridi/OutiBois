@@ -8,6 +8,8 @@ router.route('/findOnenNewMachine').get(newMachine.find_one_newMachine);
 
 router.route('/findManynewMachine').get(newMachine.add_many_newMachine);
 
+router.route("/findAllMachine").get(newMachine.find_all_newMachine);
+
 router.route('/updateOnenNewMachine/:_id').put(newMachine.update_one_newMachine);
 
 router.route('/deleteOnenNewMachine/:_id').delete(newMachine.delete_one_newMachine);
