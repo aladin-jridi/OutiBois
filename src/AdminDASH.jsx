@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
+import { Image } from "cloudinary-react";
 
 function AdminDADH() {
 	$(document).ready(function () {
@@ -27,7 +28,9 @@ function AdminDADH() {
 	});
 
 	const [newMachines, setnewMachines] = useState([]);
-
+	const [oldMachines, setoldMachines] = useState([]);
+	const [accessoires, setaccessoires] = useState([]);
+	const [current, setcurrent] = useState([]);
 	const [name, setname] = useState("");
 	const [discription, setdiscription] = useState("");
 	const [categorie, setcategorie] = useState("");
@@ -35,11 +38,27 @@ function AdminDADH() {
 
 	useLayoutEffect(() => {
 		axios
-			.get("http://localhost:5000/api/newMachine/findAllMachine")
+			.get("http://localhost:5000/api/newMachine/findAll")
 			.then(({ data }) => {
 				// console.log(data);
 				setnewMachines(data);
-			});
+				setcurrent(data);
+			})
+			.then(() => {
+				axios
+					.get("http://localhost:5000/api/oldMachine/findAll")
+					.then(({ data }) => {
+						setoldMachines(data);
+					});
+			})
+			.then(() => {
+				axios
+					.get("http://localhost:5000/api/accessoire/findAll")
+					.then(({ data }) => {
+						setaccessoires(data);
+					});
+			})
+			.catch((err) => console.log(err));
 	}, []);
 
 	// useEffect(() => {
@@ -51,7 +70,7 @@ function AdminDADH() {
 		formData.append("file", file);
 		formData.append("upload_preset", "lzyjffjz");
 		return axios.post(
-			"http://api.cloudinary.com/v1_1/da7abrbcz/image/upload",
+			"http://api.cloudinary.com/v1_1/outibois/image/upload",
 			formData
 		);
 	};
@@ -60,14 +79,25 @@ function AdminDADH() {
 		e.preventDefault();
 		console.log(image);
 		uploadeImage(image)
-			.then(({ data }) => console.log(data))
+			.then(({ data }) => {
+				// console.log(data);
+				console.log({
+					name: name,
+					discription: discription,
+					cat: categorie,
+					img: data.public_id,
+				});
+				let machine = {
+					name: name,
+					discription: discription,
+					image: [data.public_id],
+				};
+				axios.post(
+					`http://localhost:5000/api/${categorie}/add`,
+					machine
+				);
+			})
 			.catch((err) => console.log(err));
-		// console.log({
-		// 	name: name,
-		// 	discription: discription,
-		// 	cat: categorie,
-		// 	img: image,
-		// });
 	};
 
 	return (
@@ -81,6 +111,30 @@ function AdminDADH() {
 									<h2>
 										Manage <b>Machine</b>
 									</h2>
+									<div className='toggle-machine'>
+										<p
+											onClick={() => {
+												setcurrent(newMachines);
+											}}
+										>
+											Nouvelle machine
+										</p>
+										<p
+											onClick={() => {
+												setcurrent(oldMachines);
+											}}
+										>
+											Ancienne machine
+										</p>
+										<p
+											onClick={() => {
+												setcurrent(accessoires);
+											}}
+										>
+											Outiage
+										</p>
+										<p>Demmande devis</p>
+									</div>
 								</div>
 								<div className='col-sm-6'>
 									<a
@@ -93,16 +147,6 @@ function AdminDADH() {
 										</i>{" "}
 										<span>Add New Machine</span>
 									</a>
-									<a
-										href='#deleteEmployeeModal'
-										className='btn btn-danger'
-										data-toggle='modal'
-									>
-										<i className='material-icons'>
-											&#xE15C;
-										</i>{" "}
-										<span>Delete</span>
-									</a>
 								</div>
 							</div>
 						</div>
@@ -110,15 +154,6 @@ function AdminDADH() {
 							<table className='table table-striped table-hover'>
 								<thead>
 									<tr>
-										<th>
-											<span className='custom-checkbox'>
-												<input
-													type='checkbox'
-													id='selectAll'
-												/>
-												<label htmlFor='selectAll'></label>
-											</span>
-										</th>
 										<th>Name of Machine</th>
 										<th>image</th>
 										<th>discription</th>
@@ -126,28 +161,18 @@ function AdminDADH() {
 									</tr>
 								</thead>
 								<tbody>
-									{newMachines.map((machine, index) => (
+									{current.map((machine, index) => (
 										<tr key={index}>
-											<td>
-												<span className='custom-checkbox'>
-													<input
-														type='checkbox'
-														id='checkbox1'
-														name='options[]'
-														value='1'
-													/>
-													<label htmlFor='checkbox1'></label>
-												</span>
-											</td>
 											<td>{machine.name}</td>
 											<td>
-												<img
+												<Image
+													cloudName='outibois'
+													public_id={machine.image[0]}
 													className='machine-image-admine-bord'
 													style={{
 														width: 100,
 														height: 100,
 													}}
-													src={machine.image[0]}
 												/>
 											</td>
 											<td>{machine.discription}</td>
@@ -213,13 +238,14 @@ function AdminDADH() {
 											setcategorie(e.target.value)
 										}
 									>
+										<option value=''></option>
 										<option value='newMachine'>
 											Nouvelle machine
 										</option>
 										<option value='oldMachine'>
 											Ancien machine
 										</option>
-										<option value='accessorie'>
+										<option value='accessoire'>
 											Outiage
 										</option>
 									</select>
@@ -252,11 +278,13 @@ function AdminDADH() {
 									<input
 										type='text'
 										className='form-control'
-										
 										onChange={(e) =>
 											setdiscription(e.target.value)
 										}
 										required
+										style={{
+											height: 100,
+										}}
 									/>
 								</div>
 							</div>
