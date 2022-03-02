@@ -3,30 +3,6 @@ import axios from "axios";
 import { Image } from "cloudinary-react";
 
 function AdminDADH() {
-	$(document).ready(function () {
-		// Activate tooltip
-		$('[data-toggle="tooltip"]').tooltip();
-
-		// Select/Deselect checkboxes
-		var checkbox = $('table tbody input[type="checkbox"]');
-		$("#selectAll").click(function () {
-			if (this.checked) {
-				checkbox.each(function () {
-					this.checked = true;
-				});
-			} else {
-				checkbox.each(function () {
-					this.checked = false;
-				});
-			}
-		});
-		checkbox.click(function () {
-			if (!this.checked) {
-				$("#selectAll").prop("checked", false);
-			}
-		});
-	});
-
 	const [newMachines, setnewMachines] = useState([]);
 	const [oldMachines, setoldMachines] = useState([]);
 	const [accessoires, setaccessoires] = useState([]);
@@ -36,7 +12,7 @@ function AdminDADH() {
 	const [categorie, setcategorie] = useState("");
 	const [image, setimage] = useState(null);
 
-	useLayoutEffect(() => {
+	const fetchdata = () => {
 		axios
 			.get("http://localhost:5000/api/newMachine/findAll")
 			.then(({ data }) => {
@@ -59,6 +35,10 @@ function AdminDADH() {
 					});
 			})
 			.catch((err) => console.log(err));
+	};
+
+	useLayoutEffect(() => {
+		fetchdata();
 	}, []);
 
 	// useEffect(() => {
@@ -96,6 +76,9 @@ function AdminDADH() {
 					`http://localhost:5000/api/${categorie}/add`,
 					machine
 				);
+			})
+			.then(() => {
+				fetchdata();
 			})
 			.catch((err) => console.log(err));
 	};
@@ -175,7 +158,9 @@ function AdminDADH() {
 													}}
 												/>
 											</td>
-											<td>{machine.discription}</td>
+											<td className='discription-paragraph'>
+												{machine.discription}
+											</td>
 											<td>
 												<a
 													href='#editEmployeeModal'
@@ -269,19 +254,19 @@ function AdminDADH() {
 										onChange={(e) =>
 											setimage(e.target.files[0])
 										}
-										required
+										required='true'
 									/>
 								</div>
 
 								<div className='form-group'>
 									<label>discription</label>
-									<input
+									<textarea
 										type='text'
 										className='form-control'
 										onChange={(e) =>
 											setdiscription(e.target.value)
 										}
-										required
+										required={true}
 										style={{
 											height: 100,
 										}}
@@ -299,6 +284,7 @@ function AdminDADH() {
 									type='submit'
 									className='btn btn-success'
 									onClick={add_machine}
+									data-dismiss='modal'
 								>
 									Add
 								</button>
