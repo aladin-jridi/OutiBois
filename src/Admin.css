@@ -398,3 +398,6 @@ table.table .avatar {
 .toggle-machine p:hover {
   color: #fff;
 }
+.discription-paragraph {
+	max-width: 300px;
+}
