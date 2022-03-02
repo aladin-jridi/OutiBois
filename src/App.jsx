@@ -1,20 +1,20 @@
 import "./App.css";
-import './AdminLogin'
+import "./Admin.css";
+import AdminLogin from "./AdminLogin";
+import AdminDADH from "./AdminDASH";
+import Home from "./Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import AdminLogin from './AdminLogin'
-import AdminDADH from "./AdminDASH";
 function App() {
 	return (
 		<BrowserRouter>
-		<Routes>
-		<Route path = '/AdminLogin' element={<AdminLogin/>} ></Route>
-		<Route path = '/AdminDADH' element={<AdminDADH/>} ></Route>
-
-
-		</Routes>
+			<Routes>
+				<Route path='/admin' element={<AdminLogin />}></Route>
+				<Route path='/Admindash' element={<AdminDADH />}></Route>
+				<Route path='/' element={<Home />}></Route>
+			</Routes>
 		</BrowserRouter>
-	)
+	);
 }
 
 export default App;

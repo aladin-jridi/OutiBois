@@ -2,7 +2,6 @@ const express = require("express");
 var cors = require("cors");
 const mongoose = require("mongoose");
 const port = 5000;
-
 const db = {
   database:
     // "mongodb+srv://root:root@kidkod.xmqil.mongodb.net/kidkok?retryWrites=true&w=majority" ||
@@ -21,7 +20,7 @@ let app = express();
 app.use(cors({ credentials: true, sameSite: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cors({ credentials: true, sameSite: true }));
 const accessoire = require("./routers/accessoire");
 const newMachine = require("./routers/newMachine");
 const oldMachine = require("./routers/oldMachine");
