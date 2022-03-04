@@ -53,6 +53,7 @@ module.exports = {
 		try {
 			let newMachine = req.body;
 			let id = req.params._id;
+			// console.log(id, newMachine);
 			const updatednewMachine = await NewMachine.findByIdAndUpdate(
 				id,
 				newMachine
@@ -65,8 +66,6 @@ module.exports = {
 	delete_one_newMachine: async (req, res) => {
 		try {
 			let id = req.params._id;
-			console.log(id);
-
 			const deletednewMachine = await NewMachine.findByIdAndRemove(id);
 			res.send(deletednewMachine);
 		} catch (error) {

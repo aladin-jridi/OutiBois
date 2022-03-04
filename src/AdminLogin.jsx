@@ -6,7 +6,7 @@ const AdminLogin = () => {
 		username: "",
 		password: "",
 	});
-	const naviget = useNavigate();
+	const navigate = useNavigate();
 	const signinFN = () => {
 		if (signin.username != "outibois") {
 			setSignin({ ...signin, status: "enter your username" });
@@ -15,8 +15,8 @@ const AdminLogin = () => {
 		else if (signin.password != "outibois@2022")
 			setSignin({ ...signin, status: "password too short and wrong" });
 		else {
-			// console.log("done");
-			naviget("/Admindash");
+			console.log("done");
+			navigate("/Admindash");
 		}
 	};
 

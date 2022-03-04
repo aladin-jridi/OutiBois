@@ -1,84 +1,147 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
+import { Image } from "cloudinary-react";
 
 function AdminDADH() {
-  // $(document).ready(function () {
-  // 	// Activate tooltip
-  // 	$('[data-toggle="tooltip"]').tooltip();
-
-  // 	// Select/Deselect checkboxes
-  // 	var checkbox = $('table tbody input[type="checkbox"]');
-  // 	$("#selectAll").click(function () {
-  // 		if (this.checked) {
-  // 			checkbox.each(function () {
-  // 				this.checked = true;
-  // 			});
-  // 		} else {
-  // 			checkbox.each(function () {
-  // 				this.checked = false;
-  // 			});
-  // 		}
-  // 	});
-  // 	checkbox.click(function () {
-  // 		if (!this.checked) {
-  // 			$("#selectAll").prop("checked", false);
-  // 		}
-  // 	});
-  // });
   const [newMachines, setnewMachines] = useState([]);
-
+  const [oldMachines, setoldMachines] = useState([]);
+  const [accessoires, setaccessoires] = useState([]);
+  const [current, setcurrent] = useState([]);
   const [name, setname] = useState("");
   const [discription, setdiscription] = useState("");
-  const [categorie, setcategorie] = useState("Nouvelle machine");
+  const [categorie, setcategorie] = useState("");
   const [image, setimage] = useState(null);
+  const [idRemove, setidRemove] = useState("");
+  const [idUpdate, setidUpdate] = useState("");
+  const [updatename, setupdatename] = useState("");
+  const [updatediscription, setupdatediscription] = useState("");
+  // const [updateimage, setupdateimage] = useState(null);
 
-  const [deleteMachine, setdeleteMachine] = useState(null);
-  function fetchData() {
+  const fetchdata = () => {
     axios
-      .get("http://localhost:5000/api/newMachine/findAllMachine")
+      .get("http://localhost:5000/api/newMachine/findAll")
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         setnewMachines(data);
-      });
-  }
+        setcurrent(data);
+      })
+      .then(() => {
+        axios
+          .get("http://localhost:5000/api/oldMachine/findAll")
+          .then(({ data }) => {
+            setoldMachines(data);
+          });
+      })
+      .then(() => {
+        axios
+          .get("http://localhost:5000/api/accessoire/findAll")
+          .then(({ data }) => {
+            setaccessoires(data);
+          });
+      })
+      .catch((err) => console.log(err));
+  };
+
   useLayoutEffect(() => {
-    fetchData();
+    fetchdata();
   }, []);
-  useEffect(() => {});
+
   const uploadeImage = (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("api_key", 499444684363352);
     formData.append("upload_preset", "lzyjffjz");
     return axios.post(
-      "https://api.cloudinary.com/v1_1/da7abrbcz/image/upload",
+      "http://api.cloudinary.com/v1_1/outibois/image/upload",
       formData
     );
   };
 
-  const add_machine = (e) => {
-    e.preventDefault();
-    console.log(image);
-    uploadeImage(image)
-      .then(({ data }) => console.log(data))
-      .catch((err) => console.log(err));
-    console.log({
-      name: name,
-      discription: discription,
-      cat: categorie,
-      img: image,
-    });
-  };
   function remove(id) {
+    if(current === newMachines){
     axios
-      .delete(`http://localhost:5000/api/newMachine/deleteOnenNewMachine/${id}`)
+      .delete(`http://localhost:5000/api/newMachine/deleteOne/${id}`)
       .then(() => {
-        fetchData();
+        fetchdata();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else if(current === oldMachines){
+    axios
+      .delete(`http://localhost:5000/api/oldMachine/deleteOne/${id}`)
+      .then(() => {
+        fetchdata();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }else{
+    axios
+      .delete(`http://localhost:5000/api/accessoire/deleteOne/${id}`)
+      .then(() => {
+        fetchdata();
       })
       .catch((err) => {
         console.log(err);
       });
   }
+}
+
+  const add_machine = (e) => {
+    e.preventDefault();
+    uploadeImage(image)
+      .then(({ data }) => {
+        let machine = {
+          name: name,
+          discription: discription,
+          image: [data.public_id],
+        };
+        axios.post(`http://localhost:5000/api/${categorie}/add`, machine);
+      })
+      .then(() => {
+        fetchdata();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const update = (id) => {
+    let dataUpdate = {
+      name: updatename,
+      discription: updatediscription,
+    };
+    if (current === newMachines) {
+      axios
+        .put(`http://localhost:5000/api/newMachine/updateOne/${id}`, dataUpdate)
+        .then(() => {
+          fetchdata();
+        })
+        .catch((err) => console.log(err));
+    } else if (current === oldMachines) {
+      axios
+        .put(`http://localhost:5000/api/oldMachine/updateOne/${id}`, dataUpdate)
+        .then(() => {
+          fetchdata();
+        })
+        .catch((err) => console.log(err));
+    } else {
+      axios
+        .put(`http://localhost:5000/api/accessoire/updateOne/${id}`, dataUpdate)
+        .then(() => {
+          fetchdata();
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+  const idOfItemToDelete = (id) => {
+    setidRemove(id);
+    console.log(idRemove);
+  };
+
+  const idOfItemToUpdate = (id) => {
+    setidUpdate(id);
+    console.log(id);
+  };
+
   return (
     <div className="10">
       <div className="container-xl">
@@ -90,6 +153,30 @@ function AdminDADH() {
                   <h2>
                     Manage <b>Machine</b>
                   </h2>
+                  <div className="toggle-machine">
+                    <p
+                      onClick={() => {
+                        setcurrent(newMachines);
+                      }}
+                    >
+                      Nouvelle machine
+                    </p>
+                    <p
+                      onClick={() => {
+                        setcurrent(oldMachines);
+                      }}
+                    >
+                      Ancienne machine
+                    </p>
+                    <p
+                      onClick={() => {
+                        setcurrent(accessoires);
+                      }}
+                    >
+                      Outiage
+                    </p>
+                    <p>Demmande devis</p>
+                  </div>
                 </div>
                 <div className="col-sm-6">
                   <a
@@ -100,14 +187,6 @@ function AdminDADH() {
                     <i className="material-icons">&#xE147;</i>{" "}
                     <span>Add New Machine</span>
                   </a>
-                  <a
-                    href="#deleteEmployeeModal"
-                    className="btn btn-danger"
-                    data-toggle="modal"
-                  >
-                    <i className="material-icons">&#xE15C;</i>{" "}
-                    <span>Delete</span>
-                  </a>
                 </div>
               </div>
             </div>
@@ -115,41 +194,30 @@ function AdminDADH() {
               <table className="table table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>
-                      <span className="custom-checkbox">
-                        <input type="checkbox" id="selectAll" />
-                        <label htmlFor="selectAll"></label>
-                      </span>
-                    </th>
                     <th>Name of Machine</th>
                     <th>image</th>
-                    <th>discription</th>
+                    <th>description</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {newMachines.map((machine, index) => (
+                  {current.map((machine, index) => (
                     <tr key={index}>
-                      <td>
-                        <span className="custom-checkbox">
-                          <input
-                            type="checkbox"
-                            id="checkbox1"
-                            name="options[]"
-                            value="1"
-                          />
-                          <label htmlFor="checkbox1"></label>
-                        </span>
-                      </td>
                       <td>{machine.name}</td>
                       <td>
-                        <img
+                        <Image
+                          cloudName="outibois"
+                          public_id={machine.image[0]}
                           className="machine-image-admine-bord"
-                          style={{ width: 100, height: 100 }}
-                          src={machine.image[0]}
+                          style={{
+                            width: 100,
+                            height: 100,
+                          }}
                         />
                       </td>
-                      <td>{machine.discription}</td>
+                      <td className="discription-paragraph">
+                        {machine.discription}
+                      </td>
                       <td>
                         <a
                           href="#editEmployeeModal"
@@ -160,6 +228,10 @@ function AdminDADH() {
                             className="material-icons"
                             data-toggle="tooltip"
                             title="Edit"
+                            onClick={() => {
+                              idOfItemToUpdate(machine._id),
+                                console.log(machine._id);
+                            }}
                           >
                             &#xE254;
                           </i>
@@ -170,12 +242,13 @@ function AdminDADH() {
                           data-toggle="modal"
                         >
                           <i
-                            onClick={() => {
-                              setdeleteMachine(machine._id);
-                            }}
                             className="material-icons"
                             data-toggle="tooltip"
                             title="Delete"
+                            onClick={() => {
+                              idOfItemToDelete(machine._id),
+                                console.log(machine._id);
+                            }}
                           >
                             &#xE872;
                           </i>
@@ -185,12 +258,10 @@ function AdminDADH() {
                   ))}
                 </tbody>
               </table>
-              ;
             </div>
           </div>
         </div>
       </div>
-
       <div id="addEmployeeModal" className="modal fade">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -206,19 +277,20 @@ function AdminDADH() {
                   &times;
                 </button>
               </div>
-              <div className="form-group">
-                <label>Categorie</label>
-                <select
-                  className="form-control"
-                  required
-                  onChange={(e) => setcategorie(e.target.value)}
-                >
-                  <option value="newMachine">Nouvelle machine</option>
-                  <option value="oldMachine">Ancienne machine</option>
-                  <option value="accessorie">Outiage</option>
-                </select>
-              </div>
               <div className="modal-body">
+                <div className="form-group">
+                  <label>Categorie</label>
+                  <select
+                    className="form-control"
+                    required
+                    onChange={(e) => setcategorie(e.target.value)}
+                  >
+                    <option value=""></option>
+                    <option value="newMachine">Nouvelle machine</option>
+                    <option value="oldMachine">Ancien machine</option>
+                    <option value="accessoire">Outiage</option>
+                  </select>
+                </div>
                 <div className="form-group">
                   <label>Name</label>
                   <input
@@ -233,18 +305,21 @@ function AdminDADH() {
                   <input
                     type="file"
                     className="form-control"
-                    required
                     onChange={(e) => setimage(e.target.files[0])}
+                    required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label>discription</label>
-                  <input
+                  <label>description</label>
+                  <textarea
                     type="text"
                     className="form-control"
-                    required
                     onChange={(e) => setdiscription(e.target.value)}
+                    required
+                    style={{
+                      height: 100,
+                    }}
                   />
                 </div>
               </div>
@@ -258,12 +333,72 @@ function AdminDADH() {
                 <button
                   type="submit"
                   className="btn btn-success"
-                  onClick={(image) => {
-                    uploadeImage(image);
-                  }}
+                  onClick={add_machine}
+                  data-dismiss="modal"
                 >
                   Add
                 </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div id="editEmployeeModal" className="modal fade">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <form>
+              <div className="modal-header">
+                <h4 className="modal-title">Edit machine</h4>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  &times;
+                </button>
+              </div>
+              <div className="modal-body">
+                <div className="form-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    required
+                    onChange={(e) => setupdatename(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>image</label>
+                  <input type="file" className="form-control" />
+                </div>
+
+                <div className="form-group">
+                  <label>description</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    required
+                    onChange={(e) => setupdatediscription(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <input
+                  type="button"
+                  className="btn btn-default"
+                  data-dismiss="modal"
+                  value="Cancel"
+                />
+                <input
+                  type="submit"
+                  className="btn btn-info"
+                  value="Save"
+                  onClick={() => {
+                    update(idUpdate);
+                  }}
+                />
               </div>
             </form>
           </div>
@@ -300,7 +435,7 @@ function AdminDADH() {
                 />
                 <input
                   onClick={() => {
-                    remove(deleteMachine);
+                    remove(idRemove);
                   }}
                   type="button"
                   className="btn btn-danger"

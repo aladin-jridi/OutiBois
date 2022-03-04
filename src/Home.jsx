@@ -1,7 +1,51 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
+import axios from "axios";
+import { Image } from "cloudinary-react";
 import "./Home.css";
 
 function Home() {
+	const [newMachines, setnewMachines] = useState([]);
+	const [oldMachines, setoldMachines] = useState([]);
+	const [accessoires, setaccessoires] = useState([]);
+	const [current, setcurrent] = useState([]);
+	const [shopcard, setshopcard] = useState([]);
+
+	const fetchdata = () => {
+		axios
+			.get("http://localhost:5000/api/newMachine/findAll")
+			.then(({ data }) => {
+				// console.log(data);
+				setnewMachines(data);
+				setcurrent(data);
+			})
+			.then(() => {
+				axios
+					.get("http://localhost:5000/api/oldMachine/findAll")
+					.then(({ data }) => {
+						setoldMachines(data);
+					});
+			})
+			.then(() => {
+				axios
+					.get("http://localhost:5000/api/accessoire/findAll")
+					.then(({ data }) => {
+						setaccessoires(data);
+					});
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const addToCard = (item) => {
+		let card = shopcard;
+		card.push(item);
+		setshopcard(card);
+		console.log(shopcard);
+	};
+
+	useLayoutEffect(() => {
+		fetchdata();
+	}, []);
+
 	useEffect(() => {
 		jQuery("#slider1").revolution({
 			sliderType: "standard",
@@ -38,6 +82,7 @@ function Home() {
 			gridheight: 800,
 		});
 	});
+
 	return (
 		<div className='App'>
 			<div className='preloader'>
@@ -86,53 +131,43 @@ function Home() {
 								<div className='cart-icon'>
 									<i className='fa fa-shopping-cart' />
 									<span className='title'>shop cart</span>
-									<span className='cart-label'>2</span>
+									<span className='cart-label'>
+										{shopcard.length}
+									</span>
 								</div>
 								<div className='cart-box'>
 									<div className='cart-overview'>
 										<ul className='list-unstyled'>
-											<li>
-												<img
-													className='img-responsive'
-													src='src/assets/images/shop/thumb/1h.png'
-													alt='product'
-												/>
-												<div className='product-meta'>
-													<h5 className='product-title'>
-														CST/Berger
-													</h5>
-													<p className='product-price'>
-														Price: $68.00{" "}
-													</p>
-													<p className='product-quantity'>
-														Quantity: 1
-													</p>
-												</div>
-												<a className='cancel' href='#'>
-													cancel
-												</a>
-											</li>
-											<li>
-												<img
-													className='img-responsive'
-													src='src/assets/images/shop/thumb/2h.png'
-													alt='product'
-												/>
-												<div className='product-meta'>
-													<h5 className='product-title'>
-														Charger/Radio
-													</h5>
-													<p className='product-price'>
-														Price: $180.00{" "}
-													</p>
-													<p className='product-quantity'>
-														Quantity: 1
-													</p>
-												</div>
-												<a className='cancel' href='#'>
-													cancel
-												</a>
-											</li>
+											{shopcard.map((machine, index) => (
+												<li key={index}>
+													<Image
+														className='img-responsive'
+														cloudName='outibois'
+														public_id={
+															machine.image
+														}
+													/>
+													{/* <img
+														className='img-responsive'
+														src='src/assets/images/shop/thumb/1h.png'
+														alt='product'
+													/> */}
+													<div className='product-meta'>
+														<h5 className='product-title'>
+															{machine.name}
+														</h5>
+														{/* <p className='product-price'>
+															Price: $68.00{" "}
+														</p> */}
+														<p className='product-quantity'>
+															Quantity: 1
+														</p>
+													</div>
+													<a className='cancel'>
+														cancel
+													</a>
+												</li>
+											))}
 										</ul>
 									</div>
 									<div className='cart-total'>
@@ -775,28 +810,27 @@ function Home() {
 						{/* Projects Filter============================================= */}
 						<div className='col-xs-12 col-sm-12 col-md-12 shop-filter'>
 							<ul className='list-inline'>
-								<li>
+								<li onClick={() => setcurrent(newMachines)}>
 									<a
 										className='active-filter'
-										href='#'
 										data-filter='*'
 									>
-										All Products
+										Nouvelle Machine
+									</a>
+								</li>
+								<li onClick={() => setcurrent(oldMachines)}>
+									<a data-filter='.filter-best'>
+										Ancienne Machine
+									</a>
+								</li>
+								<li onClick={() => setcurrent(accessoires)}>
+									<a data-filter='.filter-featured'>
+										Outiage
 									</a>
 								</li>
 								<li>
-									<a href='#' data-filter='.filter-best'>
-										Best Selling
-									</a>
-								</li>
-								<li>
-									<a href='#' data-filter='.filter-featured'>
-										Featured
-									</a>
-								</li>
-								<li>
-									<a href='#' data-filter='.filter-sale'>
-										On Sale
+									<a data-filter='.filter-sale'>
+										En Promotion
 									</a>
 								</li>
 							</ul>
@@ -807,233 +841,46 @@ function Home() {
 					{/* Projects Item ============================================= */}
 					<div id='shop-all' className='row'>
 						{/* Product Item #1 */}
-						<div className='col-xs-12 col-sm-6 col-md-3 product-item filter-best'>
-							<div className='product-img'>
-								<img
-									src='src/assets/images/shop/grid/1.jpg'
-									alt='product'
-								/>
-								<div className='product-hover'>
-									<div className='product-cart'>
-										<a
-											className='btn btn-secondary btn-block'
-											href='#'
-										>
-											Add To Cart
-										</a>
+						{current.map((machine, index) => (
+							<div
+								className='col-xs-12 col-sm-6 col-md-3 product-item filter-best'
+								key={index}
+							>
+								<div className='product-img'>
+									<Image
+										className='cloudinary-img'
+										cloudName='outibois'
+										public_id={machine.image[0]}
+									/>
+									{/* <img
+										src='src/assets/images/shop/grid/1.jpg'
+										alt='product'
+									/> */}
+									<div className='product-hover'>
+										<div className='product-cart'>
+											<a
+												onClick={() =>
+													addToCard(machine)
+												}
+												className='btn btn-secondary btn-block'
+											>
+												Add To Cart
+											</a>
+										</div>
 									</div>
 								</div>
-							</div>
-							{/* .product-img end */}
-							<div className='product-bio'>
-								<h4>
-									<a href='#'>CST/Berger</a>
-								</h4>
-								<p className='product-price'>$68.00</p>
-							</div>
-							{/* .product-bio end */}
-						</div>
-						{/* .product-item end */}
-						{/* Product Item #2 */}
-						<div className='col-xs-12 col-sm-6 col-md-3 product-item filter-sale'>
-							<div className='product-img'>
-								<img
-									src='src/assets/images/shop/grid/2.jpg'
-									alt='product'
-								/>
-								<div className='product-sale'>sale</div>
-								<div className='product-hover'>
-									<div className='product-cart'>
-										<a
-											className='btn btn-secondary btn-block'
-											href='#'
-										>
-											Add To Cart
-										</a>
-									</div>
+								{/* .product-img end */}
+								<div className='product-bio'>
+									<h4>
+										<a href='#'>{machine.name}</a>
+									</h4>
+									<p className='product-price'>
+										{machine.discription}
+									</p>
 								</div>
+								{/* .product-bio end */}
 							</div>
-							{/* .product-img end */}
-							<div className='product-bio'>
-								<h4>
-									<a href='#'>Titan Measures</a>
-								</h4>
-								<p className='product-price'>
-									<span>$40.00</span>
-									$32.00
-								</p>
-							</div>
-							{/* .product-bio end */}
-						</div>
-						{/* .product-item end */}
-						{/* Product Item #3 */}
-						<div className='col-xs-12 col-sm-6 col-md-3 product-item filter-best'>
-							<div className='product-img'>
-								<img
-									src='src/assets/images/shop/grid/3.jpg'
-									alt='product'
-								/>
-								<div className='product-hover'>
-									<div className='product-cart'>
-										<a
-											className='btn btn-secondary btn-block'
-											href='#'
-										>
-											Add To Cart
-										</a>
-									</div>
-								</div>
-							</div>
-							{/* .product-img end */}
-							<div className='product-bio'>
-								<h4>
-									<a href='#'>Charger/Radio</a>
-								</h4>
-								<p className='product-price'>$180.00</p>
-							</div>
-							{/* .product-bio end */}
-						</div>
-						{/* .product-item end */}
-						{/* Product Item #4 */}
-						<div className='col-xs-12 col-sm-6 col-md-3 product-item filter-featured'>
-							<div className='product-img'>
-								<img
-									src='src/assets/images/shop/grid/4.jpg'
-									alt='product'
-								/>
-								<div className='product-hover'>
-									<div className='product-cart'>
-										<a
-											className='btn btn-secondary btn-block'
-											href='#'
-										>
-											Add To Cart
-										</a>
-									</div>
-								</div>
-							</div>
-							{/* .product-img end */}
-							<div className='product-bio'>
-								<h4>
-									<a href='#'>Plate Compactor</a>
-								</h4>
-								<p className='product-price'>$230.00</p>
-							</div>
-							{/* .product-bio end */}
-						</div>
-						{/* .product-item end */}
-						{/* Product Item #5 */}
-						<div className='col-xs-12 col-sm-6 col-md-3 product-item filter-best'>
-							<div className='product-img'>
-								<img
-									src='src/assets/images/shop/grid/5.jpg'
-									alt='product'
-								/>
-								<div className='product-hover'>
-									<div className='product-cart'>
-										<a
-											className='btn btn-secondary btn-block'
-											href='#'
-										>
-											Add To Cart
-										</a>
-									</div>
-								</div>
-							</div>
-							{/* .product-img end */}
-							<div className='product-bio'>
-								<h4>
-									<a href='#'>Black Tape</a>
-								</h4>
-								<p className='product-price'>$12.00</p>
-							</div>
-							{/* .product-bio end */}
-						</div>
-						{/* .product-item end */}
-						{/* Product Item #6 */}
-						<div className='col-xs-12 col-sm-6 col-md-3 product-item filter-best filter-featured'>
-							<div className='product-img'>
-								<img
-									src='src/assets/images/shop/grid/6.jpg'
-									alt='product'
-								/>
-								<div className='product-hover'>
-									<div className='product-cart'>
-										<a
-											className='btn btn-secondary btn-block'
-											href='#'
-										>
-											Add To Cart
-										</a>
-									</div>
-								</div>
-							</div>
-							{/* .product-img end */}
-							<div className='product-bio'>
-								<h4>
-									<a href='#'>ICS Concrete Saw</a>
-								</h4>
-								<p className='product-price'>$40.00</p>
-							</div>
-							{/* .product-bio end */}
-						</div>
-						{/* .product-item end */}
-						{/* Product Item #7 */}
-						<div className='col-xs-12 col-sm-6 col-md-3 product-item filter-featured'>
-							<div className='product-img'>
-								<img
-									src='src/assets/images/shop/grid/7.jpg'
-									alt='product'
-								/>
-								<div className='product-new'>new</div>
-								<div className='product-hover'>
-									<div className='product-cart'>
-										<a
-											className='btn btn-secondary btn-block'
-											href='#'
-										>
-											Add To Cart
-										</a>
-									</div>
-								</div>
-							</div>
-							{/* .product-img end */}
-							<div className='product-bio'>
-								<h4>
-									<a href='#'>NorthStar Asphalt</a>
-								</h4>
-								<p className='product-price'>$150.00</p>
-							</div>
-							{/* .product-bio end */}
-						</div>
-						{/* .product-item end */}
-						{/* Product Item #8 */}
-						<div className='col-xs-12 col-sm-6 col-md-3 product-item filter-best'>
-							<div className='product-img'>
-								<img
-									src='src/assets/images/shop/grid/8.jpg'
-									alt='product'
-								/>
-								<div className='product-hover'>
-									<div className='product-cart'>
-										<a
-											className='btn btn-secondary btn-block'
-											href='#'
-										>
-											Add To Cart
-										</a>
-									</div>
-								</div>
-							</div>
-							{/* .product-img end */}
-							<div className='product-bio'>
-								<h4>
-									<a href='#'>Keson Fiberglass</a>
-								</h4>
-								<p className='product-price'>$550.00</p>
-							</div>
-							{/* .product-bio end */}
-						</div>
+						))}
 						{/* .product-item end */}
 					</div>
 					{/* .row end */}
@@ -1141,8 +988,7 @@ function Home() {
 			</section>
 			{/* #clients end*/}
 			<footer id='footer' className='footer-1'>
-				{/* Contact Bar
-	============================================= */}
+				{/* Contact Bar============================================= */}
 				<div className='container footer-widgtes'>
 					<div className='row'>
 						<div className='col-xs-12 col-sm-12 col-md-12'>
