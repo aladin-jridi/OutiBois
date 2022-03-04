@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { Image } from "cloudinary-react";
 import "./Home.css";
+import MachineCard from "./machineCard.jsx";
 
 function Home() {
 	const [newMachines, setnewMachines] = useState([]);
@@ -9,6 +10,12 @@ function Home() {
 	const [accessoires, setaccessoires] = useState([]);
 	const [current, setcurrent] = useState([]);
 	const [shopcard, setshopcard] = useState([]);
+	const [displayCard, setdisplayCard] = useState("machine-card-none");
+	const [currentMachine, setcurrentMachine] = useState({
+		image: "",
+		name: "",
+		discription: "",
+	});
 
 	const fetchdata = () => {
 		axios
@@ -180,13 +187,10 @@ function Home() {
 									</div>
 									<div className='clearfix'></div>
 									<div className='cart-control'>
-										<a className='btn btn-primary' href='#'>
+										<a className='btn btn-primary'>
 											view cart
 										</a>
-										<a
-											className='btn btn-secondary pull-right'
-											href='#'
-										>
+										<a className='btn btn-secondary pull-right'>
 											check out
 										</a>
 									</div>
@@ -852,10 +856,7 @@ function Home() {
 										cloudName='outibois'
 										public_id={machine.image[0]}
 									/>
-									{/* <img
-										src='src/assets/images/shop/grid/1.jpg'
-										alt='product'
-									/> */}
+
 									<div className='product-hover'>
 										<div className='product-cart'>
 											<a
@@ -872,21 +873,41 @@ function Home() {
 								{/* .product-img end */}
 								<div className='product-bio'>
 									<h4>
-										<a href='#'>{machine.name}</a>
+										<a>{machine.name}</a>
 									</h4>
 									<p className='product-price'>
-										{machine.discription}
+										{/* {machine.discription} */}
 									</p>
 								</div>
+								<video
+									className='down-arrow-show-card'
+									onClick={() => {
+										setcurrentMachine(machine);
+										setdisplayCard("machine-card-disdplay");
+									}}
+									loading='lazy'
+									muted='muted'
+									src='https://cdnl.iconscout.com/lottie/premium/thumb/down-arrow-5016011-4171811.mp4'
+									width='25'
+									height='25'
+									type='video/mp4'
+									autoPlay='autoPlay'
+									loop='loop'
+								></video>
 								{/* .product-bio end */}
 							</div>
 						))}
+						<MachineCard
+							display={displayCard}
+							setdisplay={setdisplayCard}
+							machine={currentMachine}
+						/>
 						{/* .product-item end */}
 					</div>
 					{/* .row end */}
 					<div className='row'>
 						<div className='col-xs-12 col-sm-12 col-md-12 text-center'>
-							<a className='btn btn-secondary' href='#'>
+							<a className='btn btn-secondary'>
 								more products <i className='fa fa-plus ml-xs' />
 							</a>
 						</div>
@@ -1080,26 +1101,26 @@ function Home() {
 									<div className='col-xs-6 col-sm-6 col-md-6'>
 										<ul className='list-unstyled text-capitalize'>
 											<li>
-												<a href='#'> about us</a>
+												<a> about us</a>
 											</li>
 											<li>
-												<a href='#'> careers</a>
+												<a> careers</a>
 											</li>
 											<li>
-												<a href='#'> pricing plans</a>
+												<a> pricing plans</a>
 											</li>
 										</ul>
 									</div>
 									<div className='col-xs-6 col-sm-6 col-md-6'>
 										<ul className='list-unstyled text-capitalize'>
 											<li>
-												<a href='#'> team</a>
+												<a> team</a>
 											</li>
 											<li>
-												<a href='#'> projects</a>
+												<a> projects</a>
 											</li>
 											<li>
-												<a href='#'> FAQs</a>
+												<a> FAQs</a>
 											</li>
 										</ul>
 									</div>
@@ -1113,42 +1134,36 @@ function Home() {
 									<div className='col-xs-4 col-sm-4 col-md-4'>
 										<ul className='list-unstyled text-capitalize'>
 											<li>
-												<a href='#'>
-													{" "}
-													design &amp; build
-												</a>
+												<a> design &amp; build</a>
 											</li>
 											<li>
-												<a href='#'>
-													{" "}
-													tiling &amp; painting
-												</a>
+												<a> tiling &amp; painting</a>
 											</li>
 											<li>
-												<a href='#'> revonations</a>
+												<a> revonations</a>
 											</li>
 										</ul>
 									</div>
 									<div className='col-xs-4 col-sm-4 col-md-4'>
 										<ul className='list-unstyled text-capitalize'>
 											<li>
-												<a href='#'> management</a>
+												<a> management</a>
 											</li>
 											<li>
-												<a href='#'> wood flooring</a>
+												<a> wood flooring</a>
 											</li>
 											<li>
-												<a href='#'> work consulting</a>
+												<a> work consulting</a>
 											</li>
 										</ul>
 									</div>
 									<div className='col-xs-4 col-sm-4 col-md-4'>
 										<ul className='list-unstyled text-capitalize'>
 											<li>
-												<a href='#'> wood flooring</a>
+												<a> wood flooring</a>
 											</li>
 											<li>
-												<a href='#'> green building</a>
+												<a> green building</a>
 											</li>
 										</ul>
 									</div>
@@ -1171,35 +1186,35 @@ function Home() {
 									</p>
 								</div>
 								<div className='widget-social-icon pull-right text-right pull-none-xs'>
-									<a href='#'>
+									<a>
 										<i className='fa fa-facebook' />
 										<i className='fa fa-facebook' />
 									</a>
-									<a href='#'>
+									<a>
 										<i className='fa fa-google-plus' />
 										<i className='fa fa-google-plus' />
 									</a>
-									<a href='#'>
+									<a>
 										<i className='fa fa-twitter' />
 										<i className='fa fa-twitter' />
 									</a>
-									<a href='#'>
+									<a>
 										<i className='fa fa-linkedin' />
 										<i className='fa fa-linkedin' />
 									</a>
-									<a href='#'>
+									<a>
 										<i className='fa fa-vimeo-square' />
 										<i className='fa fa-vimeo-square' />
 									</a>
-									<a href='#'>
+									<a>
 										<i className='fa fa-pinterest' />
 										<i className='fa fa-pinterest' />
 									</a>
-									<a href='#'>
+									<a>
 										<i className='fa fa-flickr' />
 										<i className='fa fa-flickr' />
 									</a>
-									<a href='#'>
+									<a>
 										<i className='fa fa-rss' />
 										<i className='fa fa-rss' />
 									</a>
