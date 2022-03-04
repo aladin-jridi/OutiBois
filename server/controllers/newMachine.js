@@ -5,6 +5,7 @@ module.exports = {
 	add_newMachine: async (req, res) => {
 		try {
 			let newMachine = req.body;
+			
 			const savednewMachine = await NewMachine.create(newMachine);
 			res.send(savednewMachine);
 		} catch (error) {
@@ -52,6 +53,7 @@ module.exports = {
 		try {
 			let newMachine = req.body;
 			let id = req.params._id;
+			// console.log(id, newMachine);
 			const updatednewMachine = await NewMachine.findByIdAndUpdate(
 				id,
 				newMachine
