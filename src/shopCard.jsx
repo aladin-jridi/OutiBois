@@ -12,9 +12,9 @@ const ShopCard = ({ shopcard, removeFromCard }) => {
 	const [domaine, setdomaine] = useState("");
 	return (
 		<div className='module module-cart pull-left'>
-			<div className='cart-icon'>
-				<i className='fa fa-shopping-cart' />
-				<span className='title'>shop cart</span>
+			<div className='cart-icon shop-icon'>
+				<i className='fa fa-shopping-cart shop-logo' />
+				{/* <span className='title'>shop cart</span> */}
 				<span className='cart-label'>{shopcard.length}</span>
 			</div>
 			<div className='cart-box' id={toggleIdShopCard}>
@@ -90,9 +90,9 @@ const ShopCard = ({ shopcard, removeFromCard }) => {
 					required
 				/>
 				<div>
-					<button className='form-control'>Confirmer</button>
+					<button className='form-control-btn'>Confirmer</button>
 					<button
-						className='form-control'
+						className='form-control-btn'
 						onClick={() => {
 							settoggleIdShopCard("");
 							settoggleIdForm("display-none");
