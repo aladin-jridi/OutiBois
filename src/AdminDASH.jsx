@@ -12,10 +12,15 @@ function AdminDADH() {
   const [categorie, setcategorie] = useState("");
   const [image, setimage] = useState(null);
   const [idRemove, setidRemove] = useState("");
-  const [idUpdate, setidUpdate] = useState("");
+  // const [idUpdate, setidUpdate] = useState("");
+  const [idUpdate, setidUpdate] = useState({
+    id: "",
+    name: "",
+    discription: "",
+  });
   const [updatename, setupdatename] = useState("");
   const [updatediscription, setupdatediscription] = useState("");
-  // const [updateimage, setupdateimage] = useState(null);
+  // const [machineData, setmachineData] = useState({ name: "", discription: "" });
 
   const fetchdata = () => {
     axios
@@ -42,6 +47,16 @@ function AdminDADH() {
       .catch((err) => console.log(err));
   };
 
+  // const fetchWithId = (id) => {
+  //   axios
+  //     .get(`http://localhost:5000/api/newMachine/findOnen/${id}`)
+  //     .then(({ data }) => {
+  //       console.log(data);
+  //       setnameById(data.name);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+
   useLayoutEffect(() => {
     fetchdata();
   }, []);
@@ -57,35 +72,35 @@ function AdminDADH() {
   };
 
   function remove(id) {
-    if(current === newMachines){
-    axios
-      .delete(`http://localhost:5000/api/newMachine/deleteOne/${id}`)
-      .then(() => {
-        fetchdata();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } else if(current === oldMachines){
-    axios
-      .delete(`http://localhost:5000/api/oldMachine/deleteOne/${id}`)
-      .then(() => {
-        fetchdata();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }else{
-    axios
-      .delete(`http://localhost:5000/api/accessoire/deleteOne/${id}`)
-      .then(() => {
-        fetchdata();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (current === newMachines) {
+      axios
+        .delete(`http://localhost:5000/api/newMachine/deleteOne/${id}`)
+        .then(() => {
+          fetchdata();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (current === oldMachines) {
+      axios
+        .delete(`http://localhost:5000/api/oldMachine/deleteOne/${id}`)
+        .then(() => {
+          fetchdata();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      axios
+        .delete(`http://localhost:5000/api/accessoire/deleteOne/${id}`)
+        .then(() => {
+          fetchdata();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
-}
 
   const add_machine = (e) => {
     e.preventDefault();
@@ -104,28 +119,37 @@ function AdminDADH() {
       .catch((err) => console.log(err));
   };
 
-  const update = (id) => {
+  const update = (object) => {
     let dataUpdate = {
       name: updatename,
       discription: updatediscription,
     };
     if (current === newMachines) {
       axios
-        .put(`http://localhost:5000/api/newMachine/updateOne/${id}`, dataUpdate)
+        .put(
+          `http://localhost:5000/api/newMachine/updateOne/${object.id}`,
+          dataUpdate
+        )
         .then(() => {
           fetchdata();
         })
         .catch((err) => console.log(err));
     } else if (current === oldMachines) {
       axios
-        .put(`http://localhost:5000/api/oldMachine/updateOne/${id}`, dataUpdate)
+        .put(
+          `http://localhost:5000/api/oldMachine/updateOne/${object.id}`,
+          dataUpdate
+        )
         .then(() => {
           fetchdata();
         })
         .catch((err) => console.log(err));
     } else {
       axios
-        .put(`http://localhost:5000/api/accessoire/updateOne/${id}`, dataUpdate)
+        .put(
+          `http://localhost:5000/api/accessoire/updateOne/${object.id}`,
+          dataUpdate
+        )
         .then(() => {
           fetchdata();
         })
@@ -134,12 +158,10 @@ function AdminDADH() {
   };
   const idOfItemToDelete = (id) => {
     setidRemove(id);
-    console.log(idRemove);
   };
 
-  const idOfItemToUpdate = (id) => {
-    setidUpdate(id);
-    console.log(id);
+  const idOfItemToUpdate = (object) => {
+    setidUpdate(object);
   };
 
   return (
@@ -229,8 +251,11 @@ function AdminDADH() {
                             data-toggle="tooltip"
                             title="Edit"
                             onClick={() => {
-                              idOfItemToUpdate(machine._id),
-                                console.log(machine._id);
+                              idOfItemToUpdate({
+                                id: machine._id,
+                                name: machine.name,
+                                discription: machine.discription,
+                              });
                             }}
                           >
                             &#xE254;
@@ -246,8 +271,11 @@ function AdminDADH() {
                             data-toggle="tooltip"
                             title="Delete"
                             onClick={() => {
-                              idOfItemToDelete(machine._id),
-                                console.log(machine._id);
+                              idOfItemToDelete(machine._id);
+                              // setmachineData({
+                              //   name: machine.name,
+                              //   discription: machine.discription,
+                              // });
                             }}
                           >
                             &#xE872;
@@ -363,6 +391,7 @@ function AdminDADH() {
                 <div className="form-group">
                   <label>Name</label>
                   <input
+                    defaultValue={idUpdate.name}
                     type="text"
                     className="form-control"
                     required
@@ -380,6 +409,7 @@ function AdminDADH() {
                     type="text"
                     className="form-control"
                     required
+                    defaultValue={idUpdate.discription}
                     onChange={(e) => setupdatediscription(e.target.value)}
                   />
                 </div>
@@ -390,6 +420,7 @@ function AdminDADH() {
                   className="btn btn-default"
                   data-dismiss="modal"
                   value="Cancel"
+                  onClick={() => {}}
                 />
                 <input
                   type="submit"
