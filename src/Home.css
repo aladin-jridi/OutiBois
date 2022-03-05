@@ -1,15 +1,30 @@
 .navbar-fixed-top {
-  background: rgb(0, 0, 0);
-  /* box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); */
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  position: fixed;
+	background: rgb(0, 0, 0);
+	/* box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); */
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	border: 1px solid rgba(0, 0, 0, 0.18);
+	position: fixed;
 }
 .cart-icon {
-  margin-left: 75vw;
-  margin-top: -7vw;
+	margin-left: 75vw;
+	margin-top: -7vw;
 }
-.logo {
-  margin-right: 75vw;
+.logo img {
+	margin-right: 50vw;
+	height: 10vw;
+	width: 20vw;
+}
+#primary-menu {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.down-arrow-show-card {
+	border-radius: 50%;
+}
+
+.down-arrow-show-card:hover {
+	border-radius: 50%;
+	border: solid 4px #f8be20;
 }
