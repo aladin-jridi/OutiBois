@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.route("/add").post(newMachine.add_newMachine);
 
-router.route("/findOnen").get(newMachine.find_one_newMachine);
+router.route("/findOnen/:_id").get(newMachine.find_one_newMachine);
 
 router.route("/findMany").get(newMachine.add_many_newMachine);
 
