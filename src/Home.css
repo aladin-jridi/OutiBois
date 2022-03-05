@@ -10,10 +10,16 @@
 	margin-left: 75vw;
 	margin-top: -7vw;
 }
-.logo {
-	margin-right: 75vw;
+.logo img {
+	margin-right: 50vw;
+	height: 10vw;
+	width: 20vw;
 }
-
+#primary-menu {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
 .down-arrow-show-card {
 	border-radius: 50%;
 }

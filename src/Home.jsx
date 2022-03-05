@@ -3,13 +3,27 @@ import axios from "axios";
 import { Image } from "cloudinary-react";
 import "./Home.css";
 import MachineCard from "./machineCard.jsx";
+import ShopCard from "./shopCard";
 
 function Home() {
 	const [newMachines, setnewMachines] = useState([]);
 	const [oldMachines, setoldMachines] = useState([]);
 	const [accessoires, setaccessoires] = useState([]);
 	const [current, setcurrent] = useState([]);
-	const [shopcard, setshopcard] = useState([]);
+	const [shopcard, setshopcard] = useState([
+		// {
+		// 	discription:
+		// 		"Utilisation de la table coulissante 405mm largeur haute résistance en alliage d'aluminium et de magnésium. - La lame peut basculer entre 0 degrés et 45 degrés avec affichage numérique montrant le degré. - La structure haute de la plaque de la force dans le corps de la machine peut assurer une grande stabilité et calme lorsque la machine fonctionne. -Vitesse de rotation peut être ajustée à 4500 / 5500rpm qui peut couper parfaitement. Il existe de nombreux accessoires en option, qui peuvent répondre à la plupart de vos besoins dans le travail quotidien. Dimension table coulissante: 3200mm * 405mm (3800 * 405 en option) La capacité de coupe brut 3200mm (3800mm en option) Largeur de coupe entre lame et guide de refente 1350mm Inclinaison lame de scie 0 ° à 45 ° Style d’inclinaison Manuel Hauteur maximale de coupe: 95mm (90 °) 55 mm (45 °) Taille maximale de la lame :350mm * 30mm Diamètre inciseur :120 * 20mm",
+		// 	image: ["pyj1gs4dtccwrcfl90xi"],
+		// 	name: "SCIE A PANNEAUX ESMAK ",
+		// },
+		// {
+		// 	discription:
+		// 		"Utilisation de la table coulissante 405mm largeur haute résistance en alliage d'aluminium et de magnésium. - La lame peut basculer entre 0 degrés et 45 degrés avec affichage numérique montrant le degré. - La structure haute de la plaque de la force dans le corps de la machine peut assurer une grande stabilité et calme lorsque la machine fonctionne. -Vitesse de rotation peut être ajustée à 4500 / 5500rpm qui peut couper parfaitement. Il existe de nombreux accessoires en option, qui peuvent répondre à la plupart de vos besoins dans le travail quotidien. Dimension table coulissante: 3200mm * 405mm (3800 * 405 en option) La capacité de coupe brut 3200mm (3800mm en option) Largeur de coupe entre lame et guide de refente 1350mm Inclinaison lame de scie 0 ° à 45 ° Style d’inclinaison Manuel Hauteur maximale de coupe: 95mm (90 °) 55 mm (45 °) Taille maximale de la lame :350mm * 30mm Diamètre inciseur :120 * 20mm",
+		// 	image: ["pyj1gs4dtccwrcfl90xi"],
+		// 	name: "SCIE A PANNEAUX ESMAK ",
+		// },
+	]);
 	const [displayCard, setdisplayCard] = useState("machine-card-none");
 	const [currentMachine, setcurrentMachine] = useState({
 		image: "",
@@ -43,8 +57,12 @@ function Home() {
 	};
 
 	const addToCard = (item) => {
-		let card = shopcard;
-		card.push(item);
+		setshopcard([...shopcard, item]);
+		console.log(shopcard);
+	};
+
+	const removeFromCard = (item) => {
+		let card = shopcard.filter((ele) => ele._id !== item._id);
 		setshopcard(card);
 		console.log(shopcard);
 	};
@@ -107,7 +125,7 @@ function Home() {
 					<div className='container'>
 						{/* Brand and toggle get grouped for better mobile display */}
 						<div className='navbar-header'>
-							<button
+							{/* <button
 								type='button'
 								className='navbar-toggle collapsed'
 								data-toggle='collapse'
@@ -120,11 +138,11 @@ function Home() {
 								<span className='icon-bar' />
 								<span className='icon-bar' />
 								<span className='icon-bar' />
-							</button>
-							<a className='logo' href='index.html'>
+							</button> */}
+							<a className='logo'>
 								<img
-									src='src/assets/images/logo/logo-light.png'
-									alt='Yellow Hats'
+									src='https://media.discordapp.net/attachments/902991650727538769/949309108853555261/web_logo-removebg-preview.png'
+									alt='OutiBois'
 								/>
 							</a>
 						</div>
@@ -134,68 +152,10 @@ function Home() {
 							id='bs-example-navbar-collapse-1'
 						>
 							{/* .module-cart */}
-							<div className='module module-cart pull-left'>
-								<div className='cart-icon'>
-									<i className='fa fa-shopping-cart' />
-									<span className='title'>shop cart</span>
-									<span className='cart-label'>
-										{shopcard.length}
-									</span>
-								</div>
-								<div className='cart-box'>
-									<div className='cart-overview'>
-										<ul className='list-unstyled'>
-											{shopcard.map((machine, index) => (
-												<li key={index}>
-													<Image
-														className='img-responsive'
-														cloudName='outibois'
-														public_id={
-															machine.image
-														}
-													/>
-													{/* <img
-														className='img-responsive'
-														src='src/assets/images/shop/thumb/1h.png'
-														alt='product'
-													/> */}
-													<div className='product-meta'>
-														<h5 className='product-title'>
-															{machine.name}
-														</h5>
-														{/* <p className='product-price'>
-															Price: $68.00{" "}
-														</p> */}
-														<p className='product-quantity'>
-															Quantity: 1
-														</p>
-													</div>
-													<a className='cancel'>
-														cancel
-													</a>
-												</li>
-											))}
-										</ul>
-									</div>
-									<div className='cart-total'>
-										<div className='total-desc'>
-											<h5>CART SUBTOTAL :</h5>
-										</div>
-										<div className='total-price'>
-											<h5>$248.00</h5>
-										</div>
-									</div>
-									<div className='clearfix'></div>
-									<div className='cart-control'>
-										<a className='btn btn-primary'>
-											view cart
-										</a>
-										<a className='btn btn-secondary pull-right'>
-											check out
-										</a>
-									</div>
-								</div>
-							</div>
+							<ShopCard
+								shopcard={shopcard}
+								removeFromCard={removeFromCard}
+							/>
 							{/* .module-cart end */}
 						</div>
 						{/* /.navbar-collapse */}
@@ -252,7 +212,7 @@ function Home() {
 									data-color='#f9f9f9'
 									style={{ fontFamily: "Raleway" }}
 								>
-									Welcome To
+									Bienvenue à
 								</div>
 								{/* LAYER NR. 2 */}
 								<div
@@ -287,7 +247,7 @@ function Home() {
 											fontSize: "55px",
 										}}
 									>
-										Yellow Hats Shop
+										OUTIBOIS
 									</h1>
 								</div>
 								{/* LAYER NR. 3 */}
@@ -307,7 +267,7 @@ function Home() {
 									data-splitin='none'
 									data-splitout='none'
 									data-responsive_offset='on'
-									data-fontsize="['17','17','17','17']"
+									data-fontsize="['19','19','19','19']"
 									data-lineheight="['26','26','25','25']"
 									data-fontweight="['700','500','500','500']"
 									data-color='#fff'
@@ -316,10 +276,12 @@ function Home() {
 										textAlign: "center",
 									}}
 								>
-									Our promise as a contractor is to build
-									community value into every project while
+									Notre promesse en tant que fournisseur est
+									de garantir la qualité de nos produits à des
+									prix imbattables.
 									<br />
-									delivering professional expertise.
+									tout en offrant une expérience
+									professionnelle.
 								</div>
 								{/* LAYER NR. 4 */}
 								<div
@@ -459,7 +421,7 @@ function Home() {
 										textAlign: "center",
 									}}
 								>
-									What We Can Do ?
+									Pourquoi nous choisir ?
 								</div>
 								{/* LAYER NR. 2 */}
 								<div
@@ -485,7 +447,7 @@ function Home() {
 									data-color='#ffc527'
 									style={{ fontFamily: "montserrat" }}
 								>
-									Design &amp; Build
+									Marques renommées &amp; Pris compétitifs
 								</div>
 								{/* LAYER NR. 3 */}
 								<div
@@ -513,10 +475,14 @@ function Home() {
 										textAlign: "center",
 									}}
 								>
-									Yellow Hats is a leading developer of
-									A-grade commercial,
+									<b>OUTIEBOIS</b> vous offre une large gamme
+									de produits de qualité assurant à ses
+									clients efficacité, Sécurité et confort.
 									<br />
-									industrial and residential projects in USA.
+									Fier de notre réputation établie, la société
+									Outibois bénéficie de la confiance et le
+									soutien de marque de renommé ce qui nous
+									permet de présenter un service viable..
 								</div>
 								{/* LAYER NR. 4 */}
 								<div
@@ -653,7 +619,7 @@ function Home() {
 										textAlign: "center",
 									}}
 								>
-									Internationally Trusted !
+									De confiance internationale !
 								</div>
 								{/* LAYER NR. 2 */}
 								<div
@@ -680,7 +646,7 @@ function Home() {
 									data-color='#ffc527'
 									style={{ fontFamily: "montserrat" }}
 								>
-									WE DESIGN
+									Nous nous soucions de votre satisfaction
 								</div>
 								{/* LAYER NR. 3 */}
 								<div
@@ -708,9 +674,9 @@ function Home() {
 										textAlign: "center",
 									}}
 								>
-									We have a team of specialists capable of
-									maximizing the result and delivering the
-									projects.
+									Nous disposons d'une équipe de spécialistes
+									capables de maximiser le résultat et de
+									délivrer les produits.
 								</div>
 								{/* LAYER NR. 4 */}
 								<div
@@ -858,14 +824,12 @@ function Home() {
 									/>
 
 									<div className='product-hover'>
-										<div className='product-cart'>
-											<a
-												onClick={() =>
-													addToCard(machine)
-												}
-												className='btn btn-secondary btn-block'
-											>
-												Add To Cart
+										<div
+											className='product-cart'
+											onClick={() => addToCard(machine)}
+										>
+											<a className='btn btn-secondary btn-block'>
+												Ajouter au panier
 											</a>
 										</div>
 									</div>
@@ -1081,15 +1045,21 @@ function Home() {
 								</div>
 								<div className='widget-about-info'>
 									<h5 className='text-capitalize text-white'>
-										yellow hats
+										OUTIBOIS
 									</h5>
 									<p className='mb-0'>
-										Yellow Hats is a leading of A-grade
-										commercial, industrial and residential
-										projects in USA. Since its foundation
-										the company has doubled its turnover
-										year on year, with its staff numbers
-										swelling accordingly.
+										La société OutiBois a été crée en 1990,
+										spécialiste et leader dans la vente,
+										réparation des machines a bois et
+										outillages industriels neuf et occasion.
+										La société OutiBois vous offre une large
+										gamme de produit exposé sur plus de
+										1000m². Fort de notre expérience de plus
+										de 40 ans dans la machinerie a bois,
+										Nous sommes a l’écoute de nos clients
+										.Nous leurs assurons bon conseils, la
+										vente, la livraison et le service après
+										vente.
 									</p>
 								</div>
 							</div>
