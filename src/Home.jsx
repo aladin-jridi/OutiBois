@@ -236,9 +236,10 @@ function Home() {
                   }}
                 >
                   <h1
+                    id="homeOutibois"
                     style={{
                       color: "#ffc527",
-                      fontSize: "55px",
+                      fontSize: "7vw",
                     }}
                   >
                     OUTIBOIS
@@ -302,7 +303,8 @@ function Home() {
                   }}
                 >
                   <img
-                    src="src/assets/images/sliders/icons/brush.png"
+                    className="picIcon"
+                    src="https://cdn.discordapp.com/attachments/902189923380121670/950056624645619752/001.png"
                     alt="brush"
                   />
                 </div>
@@ -333,7 +335,8 @@ function Home() {
                   }}
                 >
                   <img
-                    src="src/assets/images/sliders/icons/hook.png"
+                    className="picIcon"
+                    src="https://cdn.discordapp.com/attachments/902189923380121670/950057235248218152/002.png"
                     alt="hook"
                   />
                 </div>
@@ -364,7 +367,8 @@ function Home() {
                   }}
                 >
                   <img
-                    src="src/assets/images/sliders/icons/shovel.png"
+                    className="picIcon"
+                    src="https://cdn.discordapp.com/attachments/902189923380121670/950057722064298094/003.png"
                     alt="shovel"
                   />
                 </div>
@@ -414,6 +418,7 @@ function Home() {
                 </div>
                 {/* LAYER NR. 2 */}
                 <div
+                  id="hometext"
                   className="tp-caption"
                   data-x="center"
                   data-hoffset={0}
@@ -469,8 +474,10 @@ function Home() {
                   confort.
                   <br />
                   Fier de notre réputation établie, la société Outibois
-                  bénéficie de la confiance et le soutien de marque de renommé
-                  ce qui nous permet de présenter un service viable..
+                  bénéficie de la confiance
+                  <br />
+                  et le soutien de marque de renommé ce qui nous permet de
+                  présenter un service viable..
                 </div>
                 {/* LAYER NR. 4 */}
                 <div
@@ -498,7 +505,7 @@ function Home() {
                   }}
                 >
                   <img
-                    src="src/assets/images/sliders/icons/brush.png"
+                    src="https://cdn.discordapp.com/attachments/902189923380121670/950056624645619752/001.png"
                     alt="brush"
                   />
                 </div>
@@ -528,7 +535,7 @@ function Home() {
                   }}
                 >
                   <img
-                    src="src/assets/images/sliders/icons/hook.png"
+                    src="https://cdn.discordapp.com/attachments/902189923380121670/950057235248218152/002.png"
                     alt="hook"
                   />
                 </div>
@@ -558,7 +565,7 @@ function Home() {
                   }}
                 >
                   <img
-                    src="src/assets/images/sliders/icons/shovel.png"
+                    src="https://cdn.discordapp.com/attachments/902189923380121670/950057722064298094/003.png"
                     alt="shovel"
                   />
                 </div>
@@ -608,6 +615,7 @@ function Home() {
                 </div>
                 {/* LAYER NR. 2 */}
                 <div
+                  id="hometext"
                   className="tp-caption text-uppercase color-theme"
                   data-x="center"
                   data-hoffset={0}
@@ -686,7 +694,7 @@ function Home() {
                   }}
                 >
                   <img
-                    src="src/assets/images/sliders/icons/brush.png"
+                    src="https://cdn.discordapp.com/attachments/902189923380121670/950056624645619752/001.png"
                     alt="brush"
                   />
                 </div>
@@ -714,7 +722,7 @@ function Home() {
                   }}
                 >
                   <img
-                    src="src/assets/images/sliders/icons/hook.png"
+                    src="https://cdn.discordapp.com/attachments/902189923380121670/950057235248218152/002.png"
                     alt="hook"
                   />
                 </div>
@@ -742,7 +750,7 @@ function Home() {
                   }}
                 >
                   <img
-                    src="src/assets/images/sliders/icons/shovel.png"
+                    src="https://cdn.discordapp.com/attachments/902189923380121670/950057722064298094/003.png"
                     alt="shovel"
                   />
                 </div>
@@ -841,7 +849,7 @@ function Home() {
           {/* .row end */}
           <div className="row">
             <div className="col-xs-12 col-sm-12 col-md-12 text-center">
-              <a className="btn btn-secondary">
+              <a className="btn btn-secondary" id="moreProducts">
                 more products <i className="fa fa-plus ml-xs" />
               </a>
             </div>
