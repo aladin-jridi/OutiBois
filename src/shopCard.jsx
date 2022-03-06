@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Image } from "cloudinary-react";
 import "./shopCard.css";
 
@@ -10,6 +11,18 @@ const ShopCard = ({ shopcard, removeFromCard }) => {
 	const [mobile, setmobile] = useState("");
 	const [address, setaddress] = useState("");
 	const [domaine, setdomaine] = useState("");
+
+	const submitDevis = () => {
+		let devis = {
+			client: { nom, email, mobile, address, domaine },
+			machines: shopcard.map((item) => item.name),
+		};
+		axios
+			.post("http://localhost:5000/api/devit/adddevit", devis)
+			.then(({ data }) => console.log(data))
+			.catch((err) => console.log(err));
+	};
+
 	return (
 		<div className='module module-cart pull-left'>
 			<div className='cart-icon shop-icon'>
@@ -54,45 +67,60 @@ const ShopCard = ({ shopcard, removeFromCard }) => {
 				</div>
 			</div>
 			<div className='cart-box' id={toggleIdForm}>
-				<label className='client-info-user'>Nom et Prénom</label>
-				<input
-					type='text'
-					className='form-control'
-					onChange={(e) => setnom(e.target.value)}
-					required
-				/>
-				<label className='client-info-user'>Email</label>
-				<input
-					type='text'
-					className='form-control'
-					onChange={(e) => setemail(e.target.value)}
-					required
-				/>
-				<label className='client-info-user'>Mobile</label>
-				<input
-					type='text'
-					className='form-control'
-					onChange={(e) => setmobile(e.target.value)}
-					required
-				/>
-				<label className='client-info-user'>Addresse</label>
-				<input
-					type='text'
-					className='form-control'
-					onChange={(e) => setaddress(e.target.value)}
-					required
-				/>
-				<label className='client-info-user'>Domaine d'activité</label>
-				<input
-					type='text'
-					className='form-control'
-					onChange={(e) => setdomaine(e.target.value)}
-					required
-				/>
 				<div>
-					<button className='form-control-btn'>Confirmer</button>
+					<label>Nom et Prénom</label>
+					<input
+						type='text'
+						className='form-control'
+						onChange={(e) => setnom(e.target.value)}
+						required
+					/>
+				</div>
+				<div className='client-info-user'>
+					<label>Email</label>
+					<input
+						type='text'
+						className='form-control'
+						onChange={(e) => setemail(e.target.value)}
+						required
+					/>
+				</div>
+				<div className='client-info-user'>
+					<label>Mobile</label>
+					<input
+						type='text'
+						className='form-control'
+						onChange={(e) => setmobile(e.target.value)}
+						required
+					/>
+				</div>
+				<div className='client-info-user'>
+					<label>Addresse</label>
+					<input
+						type='text'
+						className='form-control'
+						onChange={(e) => setaddress(e.target.value)}
+						required
+					/>
+				</div>
+				<div className='client-info-user'>
+					<label>Domaine d'activité</label>
+					<input
+						type='text'
+						className='form-control'
+						onChange={(e) => setdomaine(e.target.value)}
+						required
+					/>
+				</div>
+				<div className='client-info-user'>
 					<button
-						className='form-control-btn'
+						className='btn btn-secondary pull-left shop-card-btn'
+						onClick={submitDevis}
+					>
+						Confirmer
+					</button>
+					<button
+						className='btn btn-secondary pull-right shop-card-btn'
 						onClick={() => {
 							settoggleIdShopCard("");
 							settoggleIdForm("display-none");
