@@ -331,6 +331,7 @@ function AdminDADH() {
                 <div className="form-group">
                   <label>Image</label>
                   <input
+                  accept=".jpg,.png"
                     type="file"
                     className="form-control"
                     onChange={(e) => setimage(e.target.files[0])}
