@@ -962,9 +962,9 @@ function Home() {
                       <i className="lnr lnr-map" />
                     </div>
                     <div className="widget-contact-info">
-                      <p className="text-capitalize text-white">visit us</p>
-                      <p className="text-capitalize font-heading">
-                        tanta , alGharbia, egypt.
+                      <p className="text-capitalize text-white">nous visiter</p>
+                      <p className="text-capitalize font-heading" id="location">
+                        Avenue Mostapha Mohsen, Borjlouzir 2073 Ariana
                       </p>
                     </div>
                   </div>
@@ -974,9 +974,11 @@ function Home() {
                       <i className="lnr lnr-envelope" />
                     </div>
                     <div className="widget-contact-info">
-                      <p className="text-capitalize text-white">email us</p>
+                      <p className="text-capitalize text-white">
+                        envoyez-nous un e-mail
+                      </p>
                       <p className="text-capitalize font-heading">
-                        7oroof@7oroof.com
+                        outiboistun@yahoo.com
                       </p>
                     </div>
                   </div>
@@ -986,9 +988,13 @@ function Home() {
                       <i className="lnr lnr-phone" />
                     </div>
                     <div className="widget-contact-info">
-                      <p className="text-capitalize text-white">call us</p>
-                      <p className="text-capitalize font-heading">
-                        002 01065370701
+                      <p className="text-capitalize text-white">nous appeler</p>
+                      <p className="text-capitalize font-heading" id="location">
+                        +216 98405401
+                        <br />
+                        +216 70680050
+                        <br />
+                        +216 70680044
                       </p>
                     </div>
                   </div>
