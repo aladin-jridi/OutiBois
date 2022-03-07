@@ -1517,13 +1517,14 @@ footer {
   margin-top: -120px;
   color: #fff;
   cursor: pointer;
+  max-height: 10vw;
 }
 
 .module-cart .cart-label {
   background-color: #ffc527;
   font-size: 1.5vw;
   font-weight: bold;
-  padding: 0.1064vw 0.1096vw;
+  padding: 0vw 0.1vw;
 }
 
 .cart-box .cart-overview li {
@@ -8201,7 +8202,7 @@ ul.comments-list ul.comment-children ul .comment-body .comment {
 
 .product-item {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 20px;
 }
 
 .product-item .product-img {
