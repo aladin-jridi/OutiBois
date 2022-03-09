@@ -27,6 +27,7 @@ const MachineCard = ({ machine, display, setdisplay }) => {
 							}}
 						/>
 					</div>
+				
 					<Image
 						cloudName='outibois'
 						public_id={machine.image[currentPic]}
