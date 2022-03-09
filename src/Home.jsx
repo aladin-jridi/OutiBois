@@ -856,7 +856,7 @@ function Home() {
       {/* Testimonials #1============================================= */}
       {/* #testimonials end */}
       {/* Shortcode #9 ============================================= */}
-      <section id="clients" className="shortcode-9">
+      {/* <section id="clients" className="shortcode-9">
         <div className="container">
           <div className="row">
             <div className="col-xs-12 col-sm-12 col-md-12">
@@ -866,13 +866,13 @@ function Home() {
                   <h2>Our Clients</h2>
                 </div>
               </div>
-              {/* .heading end */}
+             
             </div>
-            {/* .col-md-12 end */}
+            
           </div>
-          {/* .row end */}
+     
           <div className="row">
-            {/* Client Item */}
+            
             <div className="col-xs-12 col-sm-4 col-md-2">
               <div className="brand">
                 <img
@@ -882,8 +882,8 @@ function Home() {
                 />
               </div>
             </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
+         
+            
             <div className="col-xs-12 col-sm-4 col-md-2">
               <div className="brand">
                 <img
@@ -893,8 +893,8 @@ function Home() {
                 />
               </div>
             </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
+         
+           
             <div className="col-xs-12 col-sm-4 col-md-2">
               <div className="brand">
                 <img
@@ -904,8 +904,8 @@ function Home() {
                 />
               </div>
             </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
+           
+           
             <div className="col-xs-12 col-sm-4 col-md-2">
               <div className="brand">
                 <img
@@ -915,8 +915,7 @@ function Home() {
                 />
               </div>
             </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
+           
             <div className="col-xs-12 col-sm-4 col-md-2">
               <div className="brand">
                 <img
@@ -926,8 +925,7 @@ function Home() {
                 />
               </div>
             </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
+         
             <div className="col-xs-12 col-sm-4 col-md-2">
               <div className="brand last">
                 <img
@@ -937,12 +935,12 @@ function Home() {
                 />
               </div>
             </div>
-            {/* .col-md-2 end */}
+        
           </div>
-          {/* .row End */}
+         
         </div>
-        {/* .container end */}
-      </section>
+       
+      </section> */}
       {/* #clients end*/}
       <footer id="footer" className="footer-1">
         {/* Contact Bar============================================= */}
@@ -1004,12 +1002,16 @@ function Home() {
             <div className="col-xs-12 col-sm-12 col-md-12 widgets-links">
               <div className="col-xs-12 col-sm-12 col-md-4 widget-about text-center-xs mb-30-xs">
                 <div className="widget-about-logo pull-left pull-none-xs">
-                  <img src="src/assets/images/footer-logo.png" alt="logo" />
+                  <img src="https://cdn.discordapp.com/attachments/902991650727538769/949754407799623721/white.png" alt="logo" 
+                  style={{
+                            width: 70,
+                            height: 100,
+                  }}/>
                 </div>
                 <div className="widget-about-info">
                   <h5 className="text-capitalize text-white">OUTIBOIS</h5>
                   <p className="mb-0">
-                    La société OutiBois a été crée en 1990, spécialiste et
+                    La société OutiBois a été crée en 2002, spécialiste et
                     leader dans la vente, réparation des machines a bois et
                     outillages industriels neuf et occasion. La société OutiBois
                     vous offre une large gamme de produit exposé sur plus de
