@@ -10,20 +10,7 @@ function Home() {
   const [oldMachines, setoldMachines] = useState([]);
   const [accessoires, setaccessoires] = useState([]);
   const [current, setcurrent] = useState([]);
-  const [shopcard, setshopcard] = useState([
-    // {
-    // 	discription:
-    // 		"Utilisation de la table coulissante 405mm largeur haute résistance en alliage d'aluminium et de magnésium. - La lame peut basculer entre 0 degrés et 45 degrés avec affichage numérique montrant le degré. - La structure haute de la plaque de la force dans le corps de la machine peut assurer une grande stabilité et calme lorsque la machine fonctionne. -Vitesse de rotation peut être ajustée à 4500 / 5500rpm qui peut couper parfaitement. Il existe de nombreux accessoires en option, qui peuvent répondre à la plupart de vos besoins dans le travail quotidien. Dimension table coulissante: 3200mm * 405mm (3800 * 405 en option) La capacité de coupe brut 3200mm (3800mm en option) Largeur de coupe entre lame et guide de refente 1350mm Inclinaison lame de scie 0 ° à 45 ° Style d’inclinaison Manuel Hauteur maximale de coupe: 95mm (90 °) 55 mm (45 °) Taille maximale de la lame :350mm * 30mm Diamètre inciseur :120 * 20mm",
-    // 	image: ["pyj1gs4dtccwrcfl90xi"],
-    // 	name: "SCIE A PANNEAUX ESMAK ",
-    // },
-    // {
-    // 	discription:
-    // 		"Utilisation de la table coulissante 405mm largeur haute résistance en alliage d'aluminium et de magnésium. - La lame peut basculer entre 0 degrés et 45 degrés avec affichage numérique montrant le degré. - La structure haute de la plaque de la force dans le corps de la machine peut assurer une grande stabilité et calme lorsque la machine fonctionne. -Vitesse de rotation peut être ajustée à 4500 / 5500rpm qui peut couper parfaitement. Il existe de nombreux accessoires en option, qui peuvent répondre à la plupart de vos besoins dans le travail quotidien. Dimension table coulissante: 3200mm * 405mm (3800 * 405 en option) La capacité de coupe brut 3200mm (3800mm en option) Largeur de coupe entre lame et guide de refente 1350mm Inclinaison lame de scie 0 ° à 45 ° Style d’inclinaison Manuel Hauteur maximale de coupe: 95mm (90 °) 55 mm (45 °) Taille maximale de la lame :350mm * 30mm Diamètre inciseur :120 * 20mm",
-    // 	image: ["pyj1gs4dtccwrcfl90xi"],
-    // 	name: "SCIE A PANNEAUX ESMAK ",
-    // },
-  ]);
+  const [shopcard, setshopcard] = useState([]);
   const [displayCard, setdisplayCard] = useState("machine-card-none");
   const [currentMachine, setcurrentMachine] = useState({
     image: "",
@@ -962,9 +949,9 @@ function Home() {
                       <i className="lnr lnr-map" />
                     </div>
                     <div className="widget-contact-info">
-                      <p className="text-capitalize text-white">visit us</p>
-                      <p className="text-capitalize font-heading">
-                        tanta , alGharbia, egypt.
+                      <p className="text-capitalize text-white">nous visiter</p>
+                      <p className="text-capitalize font-heading" id="location">
+                        Avenue Mostapha Mohsen, Borjlouzir 2073 Ariana
                       </p>
                     </div>
                   </div>
@@ -974,9 +961,11 @@ function Home() {
                       <i className="lnr lnr-envelope" />
                     </div>
                     <div className="widget-contact-info">
-                      <p className="text-capitalize text-white">email us</p>
+                      <p className="text-capitalize text-white">
+                        envoyez-nous un e-mail
+                      </p>
                       <p className="text-capitalize font-heading">
-                        7oroof@7oroof.com
+                        outiboistun@yahoo.com
                       </p>
                     </div>
                   </div>
@@ -986,9 +975,13 @@ function Home() {
                       <i className="lnr lnr-phone" />
                     </div>
                     <div className="widget-contact-info">
-                      <p className="text-capitalize text-white">call us</p>
-                      <p className="text-capitalize font-heading">
-                        002 01065370701
+                      <p className="text-capitalize text-white">nous appeler</p>
+                      <p className="text-capitalize font-heading" id="location">
+                        +216 98405401
+                        <br />
+                        +216 70680050
+                        <br />
+                        +216 70680044
                       </p>
                     </div>
                   </div>
