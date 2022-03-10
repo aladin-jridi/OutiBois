@@ -17,13 +17,37 @@ module.exports = {
 					pass: "Azerty123+",
 				},
 			});
+			let machinesList = devit.machines.map(
+				(machine) => `<li>${machine}</li>`
+			);
 			let mailOption = {
 				from: "all.in.one.customer.services@gmail.com",
-				to: devit.client.email,
-				subject: "welcome to UnitedPets",
-				html: `<h3>thank you for chose our application UnitedPets </h3>
-                
-          <h3>you can conct us phone : 50915806 </h3> <br/><h3>or our eamil :unitedpetsofficial@yahoo.com</h3>`,
+				to: "belguesmisakr@gmail.com",
+				subject: "Demmande de devis",
+				html: `<h3>Information du client</h3>
+				<ul>
+				<li>
+					<span>nom et prenom: <span/>${devit.client.nom}
+				</li>
+				<li>
+					<span>E-mail: <span/>${devit.client.email}
+				</li>
+				<li>
+					<span>Mobile: <span/>${devit.client.mobile}
+				</li>
+				<li>
+					<span>Addresse: <span/>${devit.client.address}
+				</li>
+				<li>
+					<span>Domaine d'activité: <span/>${devit.client.domaine}
+				</li>
+				</ul>
+				<br/>
+				<h3>Articles Demmandés</h3>
+				<ul>
+				${machinesList}
+				</ul>
+          		<h3>Le client est en attent d'une devis pour les article listés</h3>`,
 			};
 			smpTransport.sendMail(mailOption, (err, response) => {
 				if (err) {

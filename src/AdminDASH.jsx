@@ -273,7 +273,13 @@ function AdminDADH() {
 												/>
 											</td>
 											<td className='discription-paragraph'>
-												{machine.discription}
+												{machine.discription
+													.split(".")
+													.map((line, i) => (
+														<div key={i}>
+															{line}
+														</div>
+													))}
 											</td>
 											<td>
 												<a
