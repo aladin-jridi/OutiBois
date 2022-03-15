@@ -17,7 +17,7 @@ const MachineCard = ({ machine, display, setdisplay }) => {
 					<div className='arrow-box'>
 						<img
 							src='https://cdn.iconscout.com/icon/premium/png-128-thumb/chevron-force-left-1667913-2039436.png'
-							srcset='https://cdn.iconscout.com/icon/premium/png-64-thumb/chevron-force-left-1667913-2039436.png 1x, https://cdn.iconscout.com/icon/premium/png-128-thumb/chevron-force-left-1667913-2039436.png 2x'
+							srcSet='https://cdn.iconscout.com/icon/premium/png-64-thumb/chevron-force-left-1667913-2039436.png 1x, https://cdn.iconscout.com/icon/premium/png-128-thumb/chevron-force-left-1667913-2039436.png 2x'
 							alt='Chevron Force Left Icon'
 							loading='lazy'
 							className='arrow-icon left-arrow'
@@ -27,7 +27,7 @@ const MachineCard = ({ machine, display, setdisplay }) => {
 							}}
 						/>
 					</div>
-				
+
 					<Image
 						cloudName='outibois'
 						public_id={machine.image[currentPic]}
@@ -36,7 +36,7 @@ const MachineCard = ({ machine, display, setdisplay }) => {
 					<div className='arrow-box'>
 						<img
 							src='https://cdn.iconscout.com/icon/premium/png-128-thumb/chevron-force-right-1667912-2039435.png'
-							srcset='https://cdn.iconscout.com/icon/premium/png-64-thumb/chevron-force-right-1667912-2039435.png 1x, https://cdn.iconscout.com/icon/premium/png-128-thumb/chevron-force-right-1667912-2039435.png 2x'
+							srcSet='https://cdn.iconscout.com/icon/premium/png-64-thumb/chevron-force-right-1667912-2039435.png 1x, https://cdn.iconscout.com/icon/premium/png-128-thumb/chevron-force-right-1667912-2039435.png 2x'
 							alt='Chevron Force Right Icon'
 							loading='lazy'
 							className='arrow-icon right-arrow'
