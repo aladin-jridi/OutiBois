@@ -50,17 +50,6 @@ function Home() {
 			.catch((err) => console.log(err));
 	};
 
-	const addToCard = (item) => {
-		setshopcard([...shopcard, item]);
-		console.log(shopcard);
-	};
-
-	const removeFromCard = (item) => {
-		let card = shopcard.filter((ele) => ele._id !== item._id);
-		setshopcard(card);
-		console.log(shopcard);
-	};
-
 	useLayoutEffect(() => {
 		fetchdata();
 	}, []);
@@ -101,6 +90,17 @@ function Home() {
 			gridheight: 800,
 		});
 	});
+
+	const addToCard = (item) => {
+		setshopcard([...shopcard, item]);
+		// console.log(shopcard);
+	};
+
+	const removeFromCard = (item) => {
+		let card = shopcard.filter((ele) => ele._id !== item._id);
+		setshopcard(card);
+		// console.log(shopcard);
+	};
 
 	return (
 		<div className='App'>

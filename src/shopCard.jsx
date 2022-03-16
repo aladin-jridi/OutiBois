@@ -14,7 +14,11 @@ const ShopCard = ({ shopcard, removeFromCard }) => {
 
 	const submitDevis = () => {
 		let devis = {
-			client: { nom, email, mobile, address, domaine },
+			nom,
+			email,
+			mobile,
+			address,
+			domaine,
 			machines: shopcard.map((item) => item.name),
 		};
 		axios
