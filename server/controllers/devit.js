@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
-const devit = require("../models/accessoire");
+const Devit = require("../models/devit");
 const nodemailer = require("nodemailer");
 
 module.exports = {
 	add_devit: async (req, res) => {
 		try {
 			let devit = req.body;
-			console.log(devit.client.email);
-			// const saveddevit = await devit.create(devit);
+			const saveddevit = await Devit.create(devit);
 			// res.send(saveddevit);
 			let smpTransport = nodemailer.createTransport({
 				service: "Gmail",
@@ -27,19 +26,19 @@ module.exports = {
 				html: `<h3>Information du client</h3>
 				<ul>
 				<li>
-					<span>nom et prenom: <span/>${devit.client.nom}
+					<span>nom et prenom: <span/>${devit.nom}
 				</li>
 				<li>
-					<span>E-mail: <span/>${devit.client.email}
+					<span>E-mail: <span/>${devit.email}
 				</li>
 				<li>
-					<span>Mobile: <span/>${devit.client.mobile}
+					<span>Mobile: <span/>${devit.mobile}
 				</li>
 				<li>
-					<span>Addresse: <span/>${devit.client.address}
+					<span>Addresse: <span/>${devit.address}
 				</li>
 				<li>
-					<span>Domaine d'activité: <span/>${devit.client.domaine}
+					<span>Domaine d'activité: <span/>${devit.domaine}
 				</li>
 				</ul>
 				<br/>
@@ -64,7 +63,7 @@ module.exports = {
 	add_many_devit: async (req, res) => {
 		try {
 			let devit = req.body.devit;
-			const saveddevit = await devit.insertMany(devit);
+			const saveddevit = await Devit.insertMany(devit);
 			res.send(saveddevit);
 		} catch (error) {
 			res.send(error);
@@ -73,7 +72,7 @@ module.exports = {
 	find_one_devit: async (req, res) => {
 		try {
 			let id = req.params._id;
-			const devit = await devit.findById(id);
+			const devit = await Devit.findById(id);
 			res.send(devit);
 		} catch (error) {
 			res.send(error);
@@ -82,7 +81,7 @@ module.exports = {
 	find_many_devit: async (req, res) => {
 		try {
 			let ids = req.body.ids.map((id) => mongoose.Types.ObjectId(id));
-			const devit = await devit.find({
+			const devit = await Devit.find({
 				_id: { $in: ids },
 			});
 			res.send(devit);
@@ -92,7 +91,7 @@ module.exports = {
 	},
 	find_all_devit: async (req, res) => {
 		try {
-			const devit = await devit.find();
+			const devit = await Devit.find();
 			res.send(devit);
 		} catch (error) {
 			res.send(error);
@@ -102,7 +101,7 @@ module.exports = {
 		try {
 			let devit = req.body;
 			let id = req.params._id;
-			const updateddevit = await devit.findByIdAndUpdate(id, devit);
+			const updateddevit = await Devit.findByIdAndUpdate(id, devit);
 			res.send(updateddevit);
 		} catch (error) {
 			res.send(error);
@@ -111,7 +110,7 @@ module.exports = {
 	delete_one_devit: async (req, res) => {
 		try {
 			let id = req.params._id;
-			const deleteddevit = await devit.findByIdAndRemove(id);
+			const deleteddevit = await Devit.findByIdAndRemove(id);
 			res.send(deleteddevit);
 		} catch (error) {
 			res.send(error);

@@ -6,13 +6,13 @@ function AdminDADH() {
 	const [newMachines, setnewMachines] = useState([]);
 	const [oldMachines, setoldMachines] = useState([]);
 	const [accessoires, setaccessoires] = useState([]);
+	const [devits, setdevits] = useState([]);
 	const [current, setcurrent] = useState([]);
 	const [name, setname] = useState("");
 	const [discription, setdiscription] = useState("");
 	const [categorie, setcategorie] = useState("");
 	const [image, setimage] = useState(null);
 	const [idRemove, setidRemove] = useState("");
-	// const [idUpdate, setidUpdate] = useState("");
 	const [idUpdate, setidUpdate] = useState({
 		id: "",
 		name: "",
@@ -20,7 +20,8 @@ function AdminDADH() {
 	});
 	const [updatename, setupdatename] = useState("");
 	const [updatediscription, setupdatediscription] = useState("");
-	// const [machineData, setmachineData] = useState({ name: "", discription: "" });
+	const [toggleDevit, settoggleDevit] = useState(true);
+	const [idDevit, setidDevit] = useState("");
 
 	const fetchdata = () => {
 		axios
@@ -42,6 +43,13 @@ function AdminDADH() {
 					.get("http://localhost:5000/api/accessoire/findAll")
 					.then(({ data }) => {
 						setaccessoires(data);
+					});
+			})
+			.then(() => {
+				axios
+					.get("http://localhost:5000/api/devit/findAll")
+					.then(({ data }) => {
+						setdevits(data);
 					});
 			})
 			.catch((err) => console.log(err));
@@ -212,6 +220,7 @@ function AdminDADH() {
 										<p
 											onClick={() => {
 												setcurrent(newMachines);
+												settoggleDevit(true);
 											}}
 										>
 											Nouvelle machine
@@ -219,6 +228,7 @@ function AdminDADH() {
 										<p
 											onClick={() => {
 												setcurrent(oldMachines);
+												settoggleDevit(true);
 											}}
 										>
 											Ancienne machine
@@ -226,11 +236,18 @@ function AdminDADH() {
 										<p
 											onClick={() => {
 												setcurrent(accessoires);
+												settoggleDevit(true);
 											}}
 										>
 											Outiage
 										</p>
-										<p>Demmande devis</p>
+										<p
+											onClick={() => {
+												settoggleDevit(false);
+											}}
+										>
+											Demmande devis
+										</p>
 									</div>
 								</div>
 								<div className='col-sm-6'>
@@ -248,88 +265,165 @@ function AdminDADH() {
 							</div>
 						</div>
 						<div>
-							<table className='table table-striped table-hover'>
-								<thead>
-									<tr>
-										<th>Name of Machine</th>
-										<th>image</th>
-										<th>description</th>
-										<th>Actions</th>
-									</tr>
-								</thead>
-								<tbody>
-									{current.map((machine, index) => (
-										<tr key={index}>
-											<td>{machine.name}</td>
-											<td>
-												<Image
-													cloudName='outibois'
-													public_id={machine.image[0]}
-													className='machine-image-admine-bord'
-													style={{
-														width: 100,
-														height: 100,
-													}}
-												/>
-											</td>
-											<td className='discription-paragraph'>
-												{machine.discription
-													.split(".")
-													.map((line, i) => (
-														<div key={i}>
-															{line}
-														</div>
-													))}
-											</td>
-											<td>
-												<a
-													href='#editEmployeeModal'
-													className='edit'
-													data-toggle='modal'
-												>
-													<i
-														className='material-icons'
-														data-toggle='tooltip'
-														title='Edit'
-														onClick={() => {
-															idOfItemToUpdate({
-																id: machine._id,
-																name: machine.name,
-																discription:
-																	machine.discription,
-															});
-														}}
-													>
-														&#xE254;
-													</i>
-												</a>
-												<a
-													href='#deleteEmployeeModal'
-													className='delete'
-													data-toggle='modal'
-												>
-													<i
-														className='material-icons'
-														data-toggle='tooltip'
-														title='Delete'
-														onClick={() => {
-															idOfItemToDelete(
-																machine._id
-															);
-															// setmachineData({
-															//   name: machine.name,
-															//   discription: machine.discription,
-															// });
-														}}
-													>
-														&#xE872;
-													</i>
-												</a>
-											</td>
+							{toggleDevit ? (
+								<table className='table table-striped table-hover'>
+									<thead>
+										<tr>
+											<th>Name of Machine</th>
+											<th>image</th>
+											<th>description</th>
+											<th>Actions</th>
 										</tr>
-									))}
-								</tbody>
-							</table>
+									</thead>
+									<tbody>
+										{current.map((machine, index) => (
+											<tr key={index}>
+												<td>{machine.name}</td>
+												<td>
+													<Image
+														cloudName='outibois'
+														public_id={
+															machine.image[0]
+														}
+														className='machine-image-admine-bord'
+														style={{
+															width: 100,
+															height: 100,
+														}}
+													/>
+												</td>
+												<td className='discription-paragraph'>
+													{machine.discription
+														.split(".")
+														.map((line, i) => (
+															<div key={i}>
+																{line}
+															</div>
+														))}
+												</td>
+												<td>
+													<a
+														href='#editEmployeeModal'
+														className='edit'
+														data-toggle='modal'
+													>
+														<i
+															className='material-icons'
+															data-toggle='tooltip'
+															title='Edit'
+															onClick={() => {
+																idOfItemToUpdate(
+																	{
+																		id: machine._id,
+																		name: machine.name,
+																		discription:
+																			machine.discription,
+																	}
+																);
+															}}
+														>
+															&#xE254;
+														</i>
+													</a>
+													<a
+														href='#deleteEmployeeModal'
+														className='delete'
+														data-toggle='modal'
+													>
+														<i
+															className='material-icons'
+															data-toggle='tooltip'
+															title='Delete'
+															onClick={() => {
+																idOfItemToDelete(
+																	machine._id
+																);
+																// setmachineData({
+																//   name: machine.name,
+																//   discription: machine.discription,
+																// });
+															}}
+														>
+															&#xE872;
+														</i>
+													</a>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							) : (
+								<table className='table table-striped table-hover'>
+									<thead>
+										<tr>
+											<th className='devit-table-col'>
+												Information du client
+											</th>
+											<th className='devit-table-col'>
+												Articles demmandés
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{devits.map((devit, index) => (
+											<tr key={index}>
+												<td className='devit-table-col client-cell'>
+													<ul>
+														<li>
+															Nom: {devit.nom}
+														</li>
+														<li>
+															E-mail:{" "}
+															{devit.email}
+														</li>
+														<li>
+															Mobile:{" "}
+															{devit.mobile}
+														</li>
+														<li>
+															Domaine:{" "}
+															{devit.address}
+														</li>
+														<li>
+															Domaine:{" "}
+															{devit.domaine}
+														</li>
+													</ul>
+												</td>
+												<td className='devit-table-col'>
+													{devit.machines.map(
+														(machine, i) => (
+															<p key={i}>
+																{machine}
+															</p>
+														)
+													)}
+												</td>
+												<td>
+													<a
+														href='#deleteEmployeeModal'
+														className='delete'
+														data-toggle='modal'
+													>
+														<i
+															className='material-icons'
+															data-toggle='tooltip'
+															title='Delete'
+															onClick={() => {
+																setidDevit(
+																	devit._id
+																);
+															}}
+														>
+															&#xE872;
+														</i>
+													</a>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							)}
 						</div>
 					</div>
 				</div>
