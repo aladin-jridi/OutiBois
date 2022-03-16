@@ -2,6 +2,10 @@
 	display: none;
 }
 
+.cart-icon {
+	margin-top: -9vw !important;
+}
+
 .shop-logo {
 	margin-right: -3vw;
 }
@@ -10,5 +14,5 @@
 }
 
 .shop-card-btn {
-	width: 10vw;
+	width: 8vw;
 }

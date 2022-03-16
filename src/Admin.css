@@ -390,10 +390,12 @@ table.table .avatar {
 	/* flex-direction: column; */
 	justify-content: space-between;
 	align-items: center;
+	width: 50vw;
 }
 .toggle-machine p {
 	font-weight: bold;
 	font-size: 16px;
+	z-index: 10;
 }
 .toggle-machine p:hover {
 	color: #fff;
@@ -407,4 +409,10 @@ table.table .avatar {
 }
 .client-cell ul {
 	padding-left: 1vw;
+}
+.text-update {
+	height: 15vw !important;
+}
+.add-machine-section {
+	width: 2vw !important;
 }
