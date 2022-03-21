@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
-const devit = require("../models/accessoire");
+const Devit = require("../models/devit");
 const nodemailer = require("nodemailer");
 
 module.exports = {
 	add_devit: async (req, res) => {
 		try {
 			let devit = req.body;
-			console.log(devit.client.email);
-			// const saveddevit = await devit.create(devit);
+			const saveddevit = await Devit.create(devit);
 			// res.send(saveddevit);
 			let smpTransport = nodemailer.createTransport({
 				service: "Gmail",
@@ -17,13 +16,37 @@ module.exports = {
 					pass: "Azerty123+",
 				},
 			});
+			let machinesList = devit.machines.map(
+				(machine) => `<li>${machine}</li>`
+			);
 			let mailOption = {
 				from: "all.in.one.customer.services@gmail.com",
-				to: devit.client.email,
-				subject: "welcome to UnitedPets",
-				html: `<h3>thank you for chose our application UnitedPets </h3>
-                
-          <h3>you can conct us phone : 50915806 </h3> <br/><h3>or our eamil :unitedpetsofficial@yahoo.com</h3>`,
+				to: "belguesmisakr@gmail.com",
+				subject: "Demmande de devis",
+				html: `<h3>Information du client</h3>
+				<ul>
+				<li>
+					<span>nom et prenom: <span/>${devit.nom}
+				</li>
+				<li>
+					<span>E-mail: <span/>${devit.email}
+				</li>
+				<li>
+					<span>Mobile: <span/>${devit.mobile}
+				</li>
+				<li>
+					<span>Addresse: <span/>${devit.address}
+				</li>
+				<li>
+					<span>Domaine d'activité: <span/>${devit.domaine}
+				</li>
+				</ul>
+				<br/>
+				<h3>Articles Demmandés</h3>
+				<ul>
+				${machinesList}
+				</ul>
+          		<h3>Le client est en attent d'une devis pour les article listés</h3>`,
 			};
 			smpTransport.sendMail(mailOption, (err, response) => {
 				if (err) {
@@ -40,7 +63,7 @@ module.exports = {
 	add_many_devit: async (req, res) => {
 		try {
 			let devit = req.body.devit;
-			const saveddevit = await devit.insertMany(devit);
+			const saveddevit = await Devit.insertMany(devit);
 			res.send(saveddevit);
 		} catch (error) {
 			res.send(error);
@@ -49,7 +72,7 @@ module.exports = {
 	find_one_devit: async (req, res) => {
 		try {
 			let id = req.params._id;
-			const devit = await devit.findById(id);
+			const devit = await Devit.findById(id);
 			res.send(devit);
 		} catch (error) {
 			res.send(error);
@@ -58,7 +81,7 @@ module.exports = {
 	find_many_devit: async (req, res) => {
 		try {
 			let ids = req.body.ids.map((id) => mongoose.Types.ObjectId(id));
-			const devit = await devit.find({
+			const devit = await Devit.find({
 				_id: { $in: ids },
 			});
 			res.send(devit);
@@ -68,7 +91,7 @@ module.exports = {
 	},
 	find_all_devit: async (req, res) => {
 		try {
-			const devit = await devit.find();
+			const devit = await Devit.find();
 			res.send(devit);
 		} catch (error) {
 			res.send(error);
@@ -78,7 +101,7 @@ module.exports = {
 		try {
 			let devit = req.body;
 			let id = req.params._id;
-			const updateddevit = await devit.findByIdAndUpdate(id, devit);
+			const updateddevit = await Devit.findByIdAndUpdate(id, devit);
 			res.send(updateddevit);
 		} catch (error) {
 			res.send(error);
@@ -87,7 +110,7 @@ module.exports = {
 	delete_one_devit: async (req, res) => {
 		try {
 			let id = req.params._id;
-			const deleteddevit = await devit.findByIdAndRemove(id);
+			const deleteddevit = await Devit.findByIdAndRemove(id);
 			res.send(deleteddevit);
 		} catch (error) {
 			res.send(error);
