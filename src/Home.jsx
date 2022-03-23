@@ -1,43 +1,84 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Image } from "cloudinary-react";
 import "./Home.css";
 import MachineCard from "./machineCard.jsx";
 import ShopCard from "./shopCard";
+import Map from "./map";
 
 function Home() {
   const [newMachines, setnewMachines] = useState([]);
   const [oldMachines, setoldMachines] = useState([]);
   const [accessoires, setaccessoires] = useState([]);
+  const [enPromotion, setenPromotion] = useState([]);
   const [current, setcurrent] = useState([]);
-  const [shopcard, setshopcard] = useState([
-    // {
-    // 	discription:
-    // 		"Utilisation de la table coulissante 405mm largeur haute résistance en alliage d'aluminium et de magnésium. - La lame peut basculer entre 0 degrés et 45 degrés avec affichage numérique montrant le degré. - La structure haute de la plaque de la force dans le corps de la machine peut assurer une grande stabilité et calme lorsque la machine fonctionne. -Vitesse de rotation peut être ajustée à 4500 / 5500rpm qui peut couper parfaitement. Il existe de nombreux accessoires en option, qui peuvent répondre à la plupart de vos besoins dans le travail quotidien. Dimension table coulissante: 3200mm * 405mm (3800 * 405 en option) La capacité de coupe brut 3200mm (3800mm en option) Largeur de coupe entre lame et guide de refente 1350mm Inclinaison lame de scie 0 ° à 45 ° Style d’inclinaison Manuel Hauteur maximale de coupe: 95mm (90 °) 55 mm (45 °) Taille maximale de la lame :350mm * 30mm Diamètre inciseur :120 * 20mm",
-    // 	image: ["pyj1gs4dtccwrcfl90xi"],
-    // 	name: "SCIE A PANNEAUX ESMAK ",
-    // },
-    // {
-    // 	discription:
-    // 		"Utilisation de la table coulissante 405mm largeur haute résistance en alliage d'aluminium et de magnésium. - La lame peut basculer entre 0 degrés et 45 degrés avec affichage numérique montrant le degré. - La structure haute de la plaque de la force dans le corps de la machine peut assurer une grande stabilité et calme lorsque la machine fonctionne. -Vitesse de rotation peut être ajustée à 4500 / 5500rpm qui peut couper parfaitement. Il existe de nombreux accessoires en option, qui peuvent répondre à la plupart de vos besoins dans le travail quotidien. Dimension table coulissante: 3200mm * 405mm (3800 * 405 en option) La capacité de coupe brut 3200mm (3800mm en option) Largeur de coupe entre lame et guide de refente 1350mm Inclinaison lame de scie 0 ° à 45 ° Style d’inclinaison Manuel Hauteur maximale de coupe: 95mm (90 °) 55 mm (45 °) Taille maximale de la lame :350mm * 30mm Diamètre inciseur :120 * 20mm",
-    // 	image: ["pyj1gs4dtccwrcfl90xi"],
-    // 	name: "SCIE A PANNEAUX ESMAK ",
-    // },
-  ]);
+  const [shopcard, setshopcard] = useState([]);
+  const [displayedArray, setdisplayedArray] = useState([]);
   const [displayCard, setdisplayCard] = useState("machine-card-none");
+  const [searchText, setsearchText] = useState("");
+  const [active, setactive] = useState({
+    filter1: "notHovered",
+    filter2: "notHovered",
+    filter3: "notHovered",
+    filter4: "notHovered",
+  });
   const [currentMachine, setcurrentMachine] = useState({
     image: "",
     name: "",
     discription: "",
   });
 
+  const location = {
+    address: "113 Av. Mustapha Mohsen, Ariana 2073",
+    lat: 36.869913,
+    lng: 10.212167,
+  };
+
+  const filter = () => {
+    var arr = [];
+    for (var i = 0; i < newMachines.length; i++) {
+      if (
+        newMachines[i].name.includes(searchText) ||
+        newMachines[i].name.includes(searchText.toUpperCase())
+      ) {
+        arr.push(newMachines[i]);
+      }
+    }
+    for (var i = 0; i < oldMachines.length; i++) {
+      if (
+        oldMachines[i].name.includes(searchText) ||
+        oldMachines[i].name.includes(searchText.toUpperCase())
+      ) {
+        arr.push(oldMachines[i]);
+      }
+    }
+    for (var i = 0; i < accessoires.length; i++) {
+      if (
+        accessoires[i].name.includes(searchText) ||
+        accessoires[i].name.includes(searchText.toUpperCase())
+      ) {
+        arr.push(accessoires[i]);
+      }
+    }
+    for (var i = 0; i < enPromotion.length; i++) {
+      if (
+        enPromotion[i].name.includes(searchText) ||
+        enPromotion[i].name.includes(searchText.toUpperCase())
+      ) {
+        arr.push(enPromotion[i]);
+      }
+    }
+    setcurrent(arr);
+  };
+
+
   const fetchdata = () => {
     axios
       .get("http://localhost:5000/api/newMachine/findAll")
       .then(({ data }) => {
-        // console.log(data);
         setnewMachines(data);
-        setcurrent(data);
+        setcurrent(data.slice(0, 12));
+        setdisplayedArray(data);
       })
       .then(() => {
         axios
@@ -53,18 +94,14 @@ function Home() {
             setaccessoires(data);
           });
       })
+      .then(() => {
+        axios
+          .get("http://localhost:5000/api/enPromotion/findAll")
+          .then(({ data }) => {
+            setenPromotion(data);
+          });
+      })
       .catch((err) => console.log(err));
-  };
-
-  const addToCard = (item) => {
-    setshopcard([...shopcard, item]);
-    console.log(shopcard);
-  };
-
-  const removeFromCard = (item) => {
-    let card = shopcard.filter((ele) => ele._id !== item._id);
-    setshopcard(card);
-    console.log(shopcard);
   };
 
   useLayoutEffect(() => {
@@ -108,6 +145,15 @@ function Home() {
     });
   });
 
+  const addToCard = (item) => {
+    setshopcard([...shopcard, item]);
+  };
+
+  const removeFromCard = (item) => {
+    let card = shopcard.filter((ele) => ele._id !== item._id);
+    setshopcard(card);
+  };
+
   return (
     <div className="App">
       <div className="preloader">
@@ -119,27 +165,14 @@ function Home() {
       </div>
       <header id="navbar-spy" className="transparent-header">
         <nav id="primary-menu" className="navbar navbar-fixed-top style-1">
-          <div className="container">
+          <div className="container navbar-logo-shop-card">
             {/* Brand and toggle get grouped for better mobile display */}
             <div className="navbar-header">
-              {/* <button
-								type='button'
-								className='navbar-toggle collapsed'
-								data-toggle='collapse'
-								data-target='#bs-example-navbar-collapse-1'
-								aria-expanded='false'
-							>
-								<span className='sr-only'>
-									Toggle navigation
-								</span>
-								<span className='icon-bar' />
-								<span className='icon-bar' />
-								<span className='icon-bar' />
-							</button> */}
               <a className="logo">
                 <img
                   src="https://cdn.discordapp.com/attachments/902991650727538769/949754407799623721/white.png"
                   alt="OutiBois"
+                  className="outieboisLogo"
                 />
               </a>
             </div>
@@ -761,27 +794,111 @@ function Home() {
         </div>
         {/* END OF SLIDER WRAPPER */}
       </section>
-      {/* #hero end */}
-      {/* Shop Filter============================================= */}
+      {/* searsh bar starts from here */}
+      <div className="searshbar">
+        <div className="row height d-flex justify-content-center align-items-center">
+          <div className="col-md-8">
+            <div className="search">
+              <i className="fa fa-search"></i>
+              <input
+                onChange={(e) => setsearchText(e.target.value)}
+                type="text"
+                className="form-control"
+                placeholder="Trouvez une machine"
+              />
+              <button className="btn btn-warning" onClick={filter}>
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* searsh bar ends here */}
       <section id="shop" className="shop-4 pt-0">
         <div className="container">
           <div className="row">
             {/* Projects Filter============================================= */}
             <div className="col-xs-12 col-sm-12 col-md-12 shop-filter">
               <ul className="list-inline">
-                <li onClick={() => setcurrent(newMachines)}>
-                  <a className="active-filter" data-filter="*">
+                <li
+                  id="homeNav"
+                  onClick={() => {
+                    setcurrent(newMachines.slice(0, 12));
+                    setdisplayedArray(newMachines);
+                    setactive({
+                      filter1: "active-filter",
+                      filter2: "notHovered",
+                      filter3: "notHovered",
+                      filter4: "notHovered",
+                    });
+                  }}
+                >
+                  <a className={active.filter1} data-filter="*" id="pointer">
                     Nouvelle Machine
                   </a>
                 </li>
-                <li onClick={() => setcurrent(oldMachines)}>
-                  <a data-filter=".filter-best">Ancienne Machine</a>
+                <li
+                  id="homeNav"
+                  onClick={() => {
+                    setcurrent(oldMachines.slice(0, 12));
+                    setdisplayedArray(oldMachines);
+                    setactive({
+                      filter1: "notHovered",
+                      filter2: "active-filter",
+                      filter3: "notHovered",
+                      filter4: "notHovered",
+                    });
+                  }}
+                >
+                  <a
+                    className={active.filter2}
+                    data-filter=".filter-best"
+                    id="pointer"
+                  >
+                    Ancienne Machine
+                  </a>
                 </li>
-                <li onClick={() => setcurrent(accessoires)}>
-                  <a data-filter=".filter-featured">Outiage</a>
+                <li
+                  id="homeNav"
+                  onClick={() => {
+                    setcurrent(accessoires.slice(0, 12));
+                    setdisplayedArray(accessoires);
+                    setactive({
+                      filter1: "notHovered",
+                      filter2: "notHovered",
+                      filter3: "active-filter",
+                      filter4: "notHovered",
+                    });
+                  }}
+                >
+                  <a
+                    className={active.filter3}
+                    data-filter=".filter-featured"
+                    id="pointer"
+                  >
+                    Outiage
+                  </a>
                 </li>
-                <li>
-                  <a data-filter=".filter-sale">En Promotion</a>
+                <li
+                  id="homeNav"
+                  onClick={() => {
+                    setcurrent(enPromotion.slice(0, 12));
+                    setdisplayedArray(enPromotion);
+                    setactive({
+                      filter1: "notHovered",
+                      filter2: "notHovered",
+                      filter3: "notHovered",
+                      filter4: "active-filter",
+                    });
+                  }}
+                >
+                  <a
+                    className={active.filter4}
+                    data-filter=".filter-sale"
+                    id="pointer"
+                  >
+                    En Promotion
+                  </a>
                 </li>
               </ul>
             </div>
@@ -847,10 +964,14 @@ function Home() {
             {/* .product-item end */}
           </div>
           {/* .row end */}
-          <div className="row">
+          <div
+            className="row"
+            onClick={() => setcurrent(displayedArray)}
+            id="pointer"
+          >
             <div className="col-xs-12 col-sm-12 col-md-12 text-center">
               <a className="btn btn-secondary" id="moreProducts">
-                more products <i className="fa fa-plus ml-xs" />
+                more product <i className="fa fa-plus ml-xs" />
               </a>
             </div>
             {/* .col-md-12 end */}
@@ -862,94 +983,7 @@ function Home() {
       {/* Testimonials #1============================================= */}
       {/* #testimonials end */}
       {/* Shortcode #9 ============================================= */}
-      <section id="clients" className="shortcode-9">
-        <div className="container">
-          <div className="row">
-            <div className="col-xs-12 col-sm-12 col-md-12">
-              <div className="heading heading-2 text-center">
-                <div className="heading-bg">
-                  <p className="mb-0">They Always Trust Us</p>
-                  <h2>Our Clients</h2>
-                </div>
-              </div>
-              {/* .heading end */}
-            </div>
-            {/* .col-md-12 end */}
-          </div>
-          {/* .row end */}
-          <div className="row">
-            {/* Client Item */}
-            <div className="col-xs-12 col-sm-4 col-md-2">
-              <div className="brand">
-                <img
-                  className="img-responsive center-block"
-                  src="src/assets/images/clients/1.png"
-                  alt="brand"
-                />
-              </div>
-            </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
-            <div className="col-xs-12 col-sm-4 col-md-2">
-              <div className="brand">
-                <img
-                  className="img-responsive center-block"
-                  src="src/assets/images/clients/2.png"
-                  alt="brand"
-                />
-              </div>
-            </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
-            <div className="col-xs-12 col-sm-4 col-md-2">
-              <div className="brand">
-                <img
-                  className="img-responsive center-block"
-                  src="src/assets/images/clients/3.png"
-                  alt="brand"
-                />
-              </div>
-            </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
-            <div className="col-xs-12 col-sm-4 col-md-2">
-              <div className="brand">
-                <img
-                  className="img-responsive center-block"
-                  src="src/assets/images/clients/4.png"
-                  alt="brand"
-                />
-              </div>
-            </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
-            <div className="col-xs-12 col-sm-4 col-md-2">
-              <div className="brand">
-                <img
-                  className="img-responsive center-block"
-                  src="src/assets/images/clients/5.png"
-                  alt="brand"
-                />
-              </div>
-            </div>
-            {/* .col-md-2 end */}
-            {/* Client Item */}
-            <div className="col-xs-12 col-sm-4 col-md-2">
-              <div className="brand last">
-                <img
-                  className="img-responsive center-block"
-                  src="src/assets/images/clients/6.png"
-                  alt="brand"
-                />
-              </div>
-            </div>
-            {/* .col-md-2 end */}
-          </div>
-          {/* .row End */}
-        </div>
-        {/* .container end */}
-      </section>
-      {/* #clients end*/}
+
       <footer id="footer" className="footer-1">
         {/* Contact Bar============================================= */}
         <div className="container footer-widgtes">
@@ -1011,104 +1045,62 @@ function Home() {
         {/* .container end */}
         {/* Widget Section
 	============================================= */}
-        <div className="container">
+        <div className="container info-section-map-section">
+          {/* <div className='widget-about-logo pull-left pull-none-xs'>
+						<img
+							src='src/assets/images/footer-logo.png'
+							alt='logo'
+						/>
+					</div> */}
           <div className="row">
-            <div className="col-xs-12 col-sm-12 col-md-12 widgets-links">
-              <div className="col-xs-12 col-sm-12 col-md-4 widget-about text-center-xs mb-30-xs">
-                <div className="widget-about-logo pull-left pull-none-xs">
-                  <img src="src/assets/images/footer-logo.png" alt="logo" />
-                </div>
-                <div className="widget-about-info">
-                  <h5 className="text-capitalize text-white">OUTIBOIS</h5>
-                  <p className="mb-0">
-                    La société OutiBois a été crée en 1990, spécialiste et
-                    leader dans la vente, réparation des machines a bois et
-                    outillages industriels neuf et occasion. La société OutiBois
-                    vous offre une large gamme de produit exposé sur plus de
-                    1000m². Fort de notre expérience de plus de 40 ans dans la
-                    machinerie a bois, Nous sommes a l’écoute de nos clients
-                    .Nous leurs assurons bon conseils, la vente, la livraison et
-                    le service après vente.
-                  </p>
-                </div>
-              </div>
-              <div className="col-xs-12 col-sm-6 col-md-3 widget-navigation text-center-xs mb-30-xs">
-                <h5 className="text-capitalize text-white">navigation</h5>
-                <div className="row">
-                  <div className="col-xs-6 col-sm-6 col-md-6">
-                    <ul className="list-unstyled text-capitalize">
-                      <li>
-                        <a> about us</a>
-                      </li>
-                      <li>
-                        <a> careers</a>
-                      </li>
-                      <li>
-                        <a> pricing plans</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="col-xs-6 col-sm-6 col-md-6">
-                    <ul className="list-unstyled text-capitalize">
-                      <li>
-                        <a> team</a>
-                      </li>
-                      <li>
-                        <a> projects</a>
-                      </li>
-                      <li>
-                        <a> FAQs</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xs-12 col-sm-6 col-md-5 widget-services text-center-xs">
-                <h5 className="text-capitalize text-white">services</h5>
-                <div className="row">
-                  <div className="col-xs-4 col-sm-4 col-md-4">
-                    <ul className="list-unstyled text-capitalize">
-                      <li>
-                        <a> design &amp; build</a>
-                      </li>
-                      <li>
-                        <a> tiling &amp; painting</a>
-                      </li>
-                      <li>
-                        <a> revonations</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="col-xs-4 col-sm-4 col-md-4">
-                    <ul className="list-unstyled text-capitalize">
-                      <li>
-                        <a> management</a>
-                      </li>
-                      <li>
-                        <a> wood flooring</a>
-                      </li>
-                      <li>
-                        <a> work consulting</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="col-xs-4 col-sm-4 col-md-4">
-                    <ul className="list-unstyled text-capitalize">
-                      <li>
-                        <a> wood flooring</a>
-                      </li>
-                      <li>
-                        <a> green building</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+            <div className="widget-about-info" id="textmap">
+              <h5 className="text-capitalize text-white">OUTIBOIS</h5>
+              <p className="mb-0">
+                La société OutiBois a été crée en 1990, spécialiste et leader
+                dans la vente, réparation des machines a bois et outillages
+                industriels neuf et occasion. La société OutiBois vous offre une
+                large gamme de produit exposé sur plus de 1000m². Fort de notre
+                expérience de plus de 40 ans dans la machinerie a bois, Nous
+                sommes a l’écoute de nos clients .Nous leurs assurons bon
+                conseils, la vente, la livraison et le service après vente.
+              </p>
             </div>
+            {/* <div className='col-xs-12 col-sm-12 col-md-12 widgets-links'>
+							<div className='col-xs-12 col-sm-12 col-md-4 widget-about text-center-xs mb-30-xs'>
+								<div className='widget-about-logo pull-left pull-none-xs'>
+									<img
+										src='src/assets/images/footer-logo.png'
+										alt='logo'
+									/>
+								</div>
+								<div className='widget-about-info'>
+									<h5 className='text-capitalize text-white'>
+										OUTIBOIS
+									</h5>
+									<p className='mb-0'>
+										La société OutiBois a été crée en 1990,
+										spécialiste et leader dans la vente,
+										réparation des machines a bois et
+										outillages industriels neuf et occasion.
+										La société OutiBois vous offre une large
+										gamme de produit exposé sur plus de
+										1000m². Fort de notre expérience de plus
+										de 40 ans dans la machinerie a bois,
+										Nous sommes a l’écoute de nos clients
+										.Nous leurs assurons bon conseils, la
+										vente, la livraison et le service après
+										vente.
+									</p>
+								</div>
+							</div>
+						</div> */}
+          </div>
+          <div className="map-section">
+            <h5 className="text-capitalize text-white">Visiter nous</h5>
+            <Map location={location} zoomLevel={16} />
           </div>
         </div>
-        {/* Social bar
-	============================================= */}
+        {/* Social bar============================================= */}
         <div className="widget-social">
           <div className="container">
             <div className="row">
@@ -1137,53 +1129,9 @@ function Home() {
                     <i className="fa fa-linkedin" />
                     <i className="fa fa-linkedin" />
                   </a>
-                  <a>
-                    <i className="fa fa-vimeo-square" />
-                    <i className="fa fa-vimeo-square" />
-                  </a>
-                  <a>
-                    <i className="fa fa-pinterest" />
-                    <i className="fa fa-pinterest" />
-                  </a>
-                  <a>
-                    <i className="fa fa-flickr" />
-                    <i className="fa fa-flickr" />
-                  </a>
-                  <a>
-                    <i className="fa fa-rss" />
-                    <i className="fa fa-rss" />
-                  </a>
                 </div>
               </div>
-              <div className="col-xs-12 col-sm-12 col-md-6">
-                <div className="widget-newsletter-info pull-left text-capitalize pull-none-xs mb-15-xs">
-                  <p className="mb-0">
-                    subsribe
-                    <br />
-                    on our newsletter
-                  </p>
-                </div>
-                <div className="widget-newsletter-form pull-right text-right">
-                  {/* Mailchimp Form =============================================*/}
-                  <form className="mailchimp">
-                    <div className="subscribe-alert"></div>
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Type Your Email Account"
-                      />
-                      <span className="input-group-btn">
-                        <button className="btn text-capitalize" type="button">
-                          join
-                        </button>
-                      </span>
-                    </div>
-                    {/* /input-group */}
-                  </form>
-                  {/*Mailchimp Form End*/}
-                </div>
-              </div>
+              <div className="col-xs-12 col-sm-12 col-md-6"></div>
             </div>
           </div>
         </div>
