@@ -30,6 +30,9 @@
   width: 40px;
   height: 40px;
   float: right;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .close-machien-card-icon:hover {
