@@ -71,10 +71,9 @@ function Home() {
     setcurrent(arr);
   };
 
-
   const fetchdata = () => {
     axios
-      .get("http://localhost:5000/api/newMachine/findAll")
+      .get("/api/newMachine/findAll")
       .then(({ data }) => {
         setnewMachines(data);
         setcurrent(data.slice(0, 12));
@@ -82,21 +81,21 @@ function Home() {
       })
       .then(() => {
         axios
-          .get("http://localhost:5000/api/oldMachine/findAll")
+          .get("/api/oldMachine/findAll")
           .then(({ data }) => {
             setoldMachines(data);
           });
       })
       .then(() => {
         axios
-          .get("http://localhost:5000/api/accessoire/findAll")
+          .get("/api/accessoire/findAll")
           .then(({ data }) => {
             setaccessoires(data);
           });
       })
       .then(() => {
         axios
-          .get("http://localhost:5000/api/enPromotion/findAll")
+          .get("/api/enPromotion/findAll")
           .then(({ data }) => {
             setenPromotion(data);
           });
@@ -947,13 +946,12 @@ function Home() {
                   loading="lazy"
                   muted="muted"
                   src="https://cdnl.iconscout.com/lottie/premium/thumb/down-arrow-5016011-4171811.mp4"
-                  width="25"
-                  height="25"
+                  width="30"
+                  height="30"
                   type="video/mp4"
                   autoPlay="autoPlay"
                   loop="loop"
                 ></video>
-                {/* .product-bio end */}
               </div>
             ))}
             <MachineCard

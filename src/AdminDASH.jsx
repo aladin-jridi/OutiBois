@@ -26,7 +26,7 @@ function AdminDADH() {
 
   const fetchdata = () => {
     axios
-      .get("http://localhost:5000/api/newMachine/findAll")
+      .get("/api/newMachine/findAll")
       .then(({ data }) => {
         // console.log(data);
         setnewMachines(data);
@@ -34,28 +34,28 @@ function AdminDADH() {
       })
       .then(() => {
         axios
-          .get("http://localhost:5000/api/oldMachine/findAll")
+          .get("/api/oldMachine/findAll")
           .then(({ data }) => {
             setoldMachines(data);
           });
       })
       .then(() => {
         axios
-          .get("http://localhost:5000/api/accessoire/findAll")
+          .get("/api/accessoire/findAll")
           .then(({ data }) => {
             setaccessoires(data);
           });
       })
       .then(() => {
         axios
-          .get("http://localhost:5000/api/enPromotion/findAll")
+          .get("/api/enPromotion/findAll")
           .then(({ data }) => {
             setenPromotion(data);
           });
       })
       .then(() => {
         axios
-          .get("http://localhost:5000/api/devit/findAll")
+          .get("/api/devit/findAll")
           .then(({ data }) => {
             setdevits(data.reverse());
           });
@@ -65,7 +65,7 @@ function AdminDADH() {
 
   // const fetchWithId = (id) => {
   //   axios
-  //     .get(`http://localhost:5000/api/newMachine/findOnen/${id}`)
+  //     .get(`/api/newMachine/findOnen/${id}`)
   //     .then(({ data }) => {
   //       console.log(data);
   //       setnameById(data.name);
@@ -90,7 +90,7 @@ function AdminDADH() {
   function remove(id) {
     if (current === newMachines) {
       axios
-        .delete(`http://localhost:5000/api/newMachine/deleteOne/${id}`)
+        .delete(`/api/newMachine/deleteOne/${id}`)
         .then(() => {
           fetchdata();
         })
@@ -99,7 +99,7 @@ function AdminDADH() {
         });
     } else if (current === oldMachines) {
       axios
-        .delete(`http://localhost:5000/api/oldMachine/deleteOne/${id}`)
+        .delete(`/api/oldMachine/deleteOne/${id}`)
         .then(() => {
           fetchdata();
         })
@@ -108,7 +108,7 @@ function AdminDADH() {
         });
     } else if (current === accessoires) {
       axios
-        .delete(`http://localhost:5000/api/accessoire/deleteOne/${id}`)
+        .delete(`/api/accessoire/deleteOne/${id}`)
         .then(() => {
           fetchdata();
         })
@@ -117,7 +117,7 @@ function AdminDADH() {
         });
     } else {
       axios
-        .delete(`http://localhost:5000/api/enPromotion/deleteOne/${id}`)
+        .delete(`/api/enPromotion/deleteOne/${id}`)
         .then(() => {
           fetchdata();
         })
@@ -137,7 +137,7 @@ function AdminDADH() {
   // 				image: [data.public_id],
   // 			};
   // 			axios.post(
-  // 				`http://localhost:5000/api/${categorie}/add`,
+  // 				`/api/${categorie}/add`,
   // 				machine
   // 			);
   // 		})
@@ -166,7 +166,7 @@ function AdminDADH() {
           discription: discription,
           image: imagesCloudineryIds,
         };
-        axios.post(`http://localhost:5000/api/${categorie}/add`, machine);
+        axios.post(`/api/${categorie}/add`, machine);
       })
       .then(() => {
         fetchdata();
@@ -182,7 +182,7 @@ function AdminDADH() {
     if (current === newMachines) {
       axios
         .put(
-          `http://localhost:5000/api/newMachine/updateOne/${object.id}`,
+          `/api/newMachine/updateOne/${object.id}`,
           dataUpdate
         )
         .then(() => {
@@ -192,7 +192,7 @@ function AdminDADH() {
     } else if (current === oldMachines) {
       axios
         .put(
-          `http://localhost:5000/api/oldMachine/updateOne/${object.id}`,
+          `/api/oldMachine/updateOne/${object.id}`,
           dataUpdate
         )
         .then(() => {
@@ -202,7 +202,7 @@ function AdminDADH() {
     } else if (current === accessoires) {
       axios
         .put(
-          `http://localhost:5000/api/accessoire/updateOne/${object.id}`,
+          `/api/accessoire/updateOne/${object.id}`,
           dataUpdate
         )
         .then(() => {
@@ -212,7 +212,7 @@ function AdminDADH() {
     } else {
       axios
         .put(
-          `http://localhost:5000/api/enPromotion/updateOne/${object.id}`,
+          `/api/enPromotion/updateOne/${object.id}`,
           dataUpdate
         )
         .then(() => {
@@ -231,7 +231,7 @@ function AdminDADH() {
 
   const removeDevit = (id) => {
     axios
-      .delete(`http://localhost:5000/api/devit/deleteOne/${id}`)
+      .delete(`/api/devit/deleteOne/${id}`)
       .then(() => {
         fetchdata();
       })
