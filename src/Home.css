@@ -31,6 +31,7 @@
 
 .down-arrow-show-card {
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .down-arrow-show-card:hover {
@@ -60,6 +61,10 @@
 
 #moreProducts {
   z-index: -999;
+}
+
+#moreProducts:hover {
+  background-color: #f8be20;
 }
 
 #location {
