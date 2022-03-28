@@ -5,7 +5,6 @@ import "./Home.css";
 import MachineCard from "./machineCard.jsx";
 import ShopCard from "./shopCard";
 import Map from "./map";
-import { useMemo, useRef } from "react/cjs/react.production.min";
 
 function Home() {
 	const [newMachines, setnewMachines] = useState([]);
@@ -14,7 +13,6 @@ function Home() {
 	const [enPromotion, setenPromotion] = useState([]);
 	const [current, setcurrent] = useState([]);
 	const [shopcard, setshopcard] = useState([]);
-	const [sizeCurrent, setsizeCurrent] = useState(1);
 	const [displayCard, setdisplayCard] = useState("machine-card-none");
 	const [active, setactive] = useState({
 		filter1: "notHovered",
@@ -34,41 +32,19 @@ function Home() {
 		lng: 10.212167,
 	};
 
-
 	const fetchdata = () => {
 		axios
 			.get("http://localhost:5000/api/newMachine/findAll")
 			.then(({ data }) => {
 				// console.log(data);
-
-				var x=[]
-			if(data[sizeCurrent])	{for(var i=0;i<=sizeCurrent;i++){
-	  x.push(data[i])
-	  setnewMachines(x);
-
-console.log(newMachines);
-			}}
-			else{	  setnewMachines(data);
-
-
-			}
-			
-				}).then(() => {
+				setnewMachines(data);
+				setcurrent(data);
+			})
+			.then(() => {
 				axios
 					.get("http://localhost:5000/api/oldMachine/findAll")
 					.then(({ data }) => {
-						var x=[]
-						if(data[sizeCurrent])	{for(var i=0;i<sizeCurrent;i++){
-							x.push(data[i])
-							setoldMachines(x);
-					  
-					  console.log(newMachines);
-								  }}
-								  else{	  setoldMachines(data);
-									  console.log(newMachines);
-					  
-					  
-								  }
+						setoldMachines(data);
 					});
 			})
 			.then(() => {
@@ -76,7 +52,6 @@ console.log(newMachines);
 					.get("http://localhost:5000/api/accessoire/findAll")
 					.then(({ data }) => {
 						setaccessoires(data);
-						
 					});
 			})
 			.then(() => {
@@ -84,47 +59,16 @@ console.log(newMachines);
 					.get("http://localhost:5000/api/enPromotion/findAll")
 					.then(({ data }) => {
 						setenPromotion(data);
-						
 					});
 			})
-
 			.catch((err) => console.log(err));
 	};
 
 	useLayoutEffect(() => {
-		
 		fetchdata();
-
-		console.log(newMachines);
 	}, []);
-	// function more (){
-	// 	setsizeCurrent(3)
-	// setTimeout(() => {
-	// 	fetchdata();
-	// 	console.log(sizeCurrent);
-	// 	console.log(oldMachines);
 
-	// }, 5000);	
-	// 	setcurrent(oldMachines)
-
-	// 	// 	setcurrent(oldMachines)
-	// 	// if (current===oldMachines) {
-	// 	// 	console.log(current);
-	// 	// 	console.log(oldMachines);
-	// 	// 	fetchdata();
-	// 	// 	setcurrent(oldMachines)
-
-	// 	// }
-	// 	// else if (current===newMachines) {
-	// 	// 	fetchdata();
-	// 	// 	setcurrent(newMachines)
-
-	// 	// }
-	// 	console.log(sizeCurrent);
-	// 	}
 	useEffect(() => {
-		
-		
 		jQuery("#slider1").revolution({
 			sliderType: "standard",
 			sliderLayout: "auto",
@@ -159,7 +103,7 @@ console.log(newMachines);
 			gridwidth: 1230,
 			gridheight: 800,
 		});
-	},[sizeCurrent]);
+	});
 
 	const addToCard = (item) => {
 		setshopcard([...shopcard, item]);
@@ -981,32 +925,10 @@ console.log(newMachines);
 					</div>
 					{/* .row end */}
 					<div className='row'>
-						<div className='col-xs-12 col-sm-12 col-md-12 text-center' >
-							<button className='btn btn-secondary' id='moreProducts'  >
-								more products <i  className='fa fa-plus ml-xs' onClick={function s (){setsizeCurrent(3)
-	setTimeout(() => {
-		fetchdata();
-		console.log(sizeCurrent);
-		console.log(oldMachines);
-
-	}, 5000);	
-		setcurrent(oldMachines)
-
-		// 	setcurrent(oldMachines)
-		// if (current===oldMachines) {
-		// 	console.log(current);
-		// 	console.log(oldMachines);
-		// 	fetchdata();
-		// 	setcurrent(oldMachines)
-
-		// }
-		// else if (current===newMachines) {
-		// 	fetchdata();
-		// 	setcurrent(newMachines)
-
-		// }
-		console.log(sizeCurrent);}} />
-							</button>
+						<div className='col-xs-12 col-sm-12 col-md-12 text-center'>
+							<a className='btn btn-secondary' id='moreProducts'>
+								more products <i className='fa fa-plus ml-xs' />
+							</a>
 						</div>
 						{/* .col-md-12 end */}
 					</div>
@@ -1016,6 +938,95 @@ console.log(newMachines);
 			</section>
 			{/* Testimonials #1============================================= */}
 			{/* #testimonials end */}
+			{/* Shortcode #9 ============================================= */}
+			<section id='clients' className='shortcode-9'>
+				<div className='container'>
+					<div className='row'>
+						<div className='col-xs-12 col-sm-12 col-md-12'>
+							<div className='heading heading-2 text-center'>
+								<div className='heading-bg'>
+									<p className='mb-0'>They Always Trust Us</p>
+									<h2>Our Clients</h2>
+								</div>
+							</div>
+							{/* .heading end */}
+						</div>
+						{/* .col-md-12 end */}
+					</div>
+					{/* .row end */}
+					<div className='row'>
+						{/* Client Item */}
+						<div className='col-xs-12 col-sm-4 col-md-2'>
+							<div className='brand'>
+								<img
+									className='img-responsive center-block'
+									src='src/assets/images/clients/1.png'
+									alt='brand'
+								/>
+							</div>
+						</div>
+						{/* .col-md-2 end */}
+						{/* Client Item */}
+						<div className='col-xs-12 col-sm-4 col-md-2'>
+							<div className='brand'>
+								<img
+									className='img-responsive center-block'
+									src='src/assets/images/clients/2.png'
+									alt='brand'
+								/>
+							</div>
+						</div>
+						{/* .col-md-2 end */}
+						{/* Client Item */}
+						<div className='col-xs-12 col-sm-4 col-md-2'>
+							<div className='brand'>
+								<img
+									className='img-responsive center-block'
+									src='src/assets/images/clients/3.png'
+									alt='brand'
+								/>
+							</div>
+						</div>
+						{/* .col-md-2 end */}
+						{/* Client Item */}
+						<div className='col-xs-12 col-sm-4 col-md-2'>
+							<div className='brand'>
+								<img
+									className='img-responsive center-block'
+									src='src/assets/images/clients/4.png'
+									alt='brand'
+								/>
+							</div>
+						</div>
+						{/* .col-md-2 end */}
+						{/* Client Item */}
+						<div className='col-xs-12 col-sm-4 col-md-2'>
+							<div className='brand'>
+								<img
+									className='img-responsive center-block'
+									src='src/assets/images/clients/5.png'
+									alt='brand'
+								/>
+							</div>
+						</div>
+						{/* .col-md-2 end */}
+						{/* Client Item */}
+						<div className='col-xs-12 col-sm-4 col-md-2'>
+							<div className='brand last'>
+								<img
+									className='img-responsive center-block'
+									src='src/assets/images/clients/6.png'
+									alt='brand'
+								/>
+							</div>
+						</div>
+						{/* .col-md-2 end */}
+					</div>
+					{/* .row End */}
+				</div>
+				{/* .container end */}
+			</section>
+			{/* #clients end*/}
 			<footer id='footer' className='footer-1'>
 				{/* Contact Bar============================================= */}
 				<div className='container footer-widgtes'>
@@ -1100,8 +1111,9 @@ console.log(newMachines);
 							<h5 className='text-capitalize text-white'>
 								OUTIBOIS
 							</h5>
+							<h4>
 							<p className='mb-0'>
-								La société OutiBois a été crée en 1990,
+								La société OutiBois a été crée en 2002,
 								spécialiste et leader dans la vente, réparation
 								des machines a bois et outillages industriels
 								neuf et occasion. La société OutiBois vous offre
@@ -1111,37 +1123,9 @@ console.log(newMachines);
 								l’écoute de nos clients .Nous leurs assurons bon
 								conseils, la vente, la livraison et le service
 								après vente.
-							</p>
+								</p></h4>
 						</div>
-						{/* <div className='col-xs-12 col-sm-12 col-md-12 widgets-links'>
-							<div className='col-xs-12 col-sm-12 col-md-4 widget-about text-center-xs mb-30-xs'>
-								<div className='widget-about-logo pull-left pull-none-xs'>
-									<img
-										src='src/assets/images/footer-logo.png'
-										alt='logo'
-									/>
-								</div>
-								<div className='widget-about-info'>
-									<h5 className='text-capitalize text-white'>
-										OUTIBOIS
-									</h5>
-									<p className='mb-0'>
-										La société OutiBois a été crée en 1990,
-										spécialiste et leader dans la vente,
-										réparation des machines a bois et
-										outillages industriels neuf et occasion.
-										La société OutiBois vous offre une large
-										gamme de produit exposé sur plus de
-										1000m². Fort de notre expérience de plus
-										de 40 ans dans la machinerie a bois,
-										Nous sommes a l’écoute de nos clients
-										.Nous leurs assurons bon conseils, la
-										vente, la livraison et le service après
-										vente.
-									</p>
-								</div>
-							</div>
-						</div> */}
+						
 					</div>
 					<div className='map-section'>
 						<h5 className='text-capitalize text-white'>
@@ -1157,28 +1141,23 @@ console.log(newMachines);
 							<div className='col-xs-12 col-sm-12 col-md-6 mb-30-xs mb-30-sm'>
 								<div className='widget-social-info pull-left text-capitalize pull-none-xs mb-15-xs'>
 									<p className='mb-0'>
-										follow us
-										<br />
-										on social networks
+										follow us : <br/>
+									<b>
+										on social networks</b>
 									</p>
 								</div>
 								<div className='widget-social-icon pull-right text-right pull-none-xs'>
-									<a>
+									<a href='https://www.facebook.com/Outibois-102007439098989'>
+									
 										<i className='fa fa-facebook' />
 										<i className='fa fa-facebook' />
 									</a>
-									<a>
+									<a href="">
 										<i className='fa fa-google-plus' />
 										<i className='fa fa-google-plus' />
 									</a>
-									<a>
-										<i className='fa fa-twitter' />
-										<i className='fa fa-twitter' />
-									</a>
-									<a>
-										<i className='fa fa-linkedin' />
-										<i className='fa fa-linkedin' />
-									</a>
+								
+									
 								</div>
 							</div>
 							<div className='col-xs-12 col-sm-12 col-md-6'></div>
