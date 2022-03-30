@@ -1050,92 +1050,67 @@ function Home() {
 							alt='logo'
 						/>
 					</div> */}
-          <div className="row">
-            <div className="widget-about-info" id="textmap">
-              <h5 className="text-capitalize text-white">OUTIBOIS</h5>
-              <p className="mb-0">
-                La société OutiBois a été crée en 1990, spécialiste et leader
-                dans la vente, réparation des machines a bois et outillages
-                industriels neuf et occasion. La société OutiBois vous offre une
-                large gamme de produit exposé sur plus de 1000m². Fort de notre
-                expérience de plus de 40 ans dans la machinerie a bois, Nous
-                sommes a l’écoute de nos clients .Nous leurs assurons bon
-                conseils, la vente, la livraison et le service après vente.
-              </p>
-            </div>
-            {/* <div className='col-xs-12 col-sm-12 col-md-12 widgets-links'>
-							<div className='col-xs-12 col-sm-12 col-md-4 widget-about text-center-xs mb-30-xs'>
-								<div className='widget-about-logo pull-left pull-none-xs'>
-									<img
-										src='src/assets/images/footer-logo.png'
-										alt='logo'
-									/>
-								</div>
-								<div className='widget-about-info'>
-									<h5 className='text-capitalize text-white'>
-										OUTIBOIS
-									</h5>
+					<div className='row'>
+						<div className='widget-about-info' id='textmap'>
+							<h5 className='text-capitalize text-white'>
+								OUTIBOIS
+							</h5>
+							<h4>
+							<p className='mb-0'>
+								La société OutiBois a été crée en 2002,
+								spécialiste et leader dans la vente, réparation
+								des machines a bois et outillages industriels
+								neuf et occasion. La société OutiBois vous offre
+								une large gamme de produit exposé sur plus de
+								1000m². Fort de notre expérience de plus de 40
+								ans dans la machinerie a bois, Nous sommes a
+								l’écoute de nos clients .Nous leurs assurons bon
+								conseils, la vente, la livraison et le service
+								après vente.
+								</p></h4>
+						</div>
+						
+					</div>
+					<div className='map-section'>
+						<h5 className='text-capitalize text-white'>
+							Visiter nous
+						</h5>
+						<Map location={location} zoomLevel={16} />
+					</div>
+				</div>
+				{/* Social bar============================================= */}
+				<div className='widget-social'>
+					<div className='container'>
+						<div className='row'>
+							<div className='col-xs-12 col-sm-12 col-md-6 mb-30-xs mb-30-sm'>
+								<div className='widget-social-info pull-left text-capitalize pull-none-xs mb-15-xs'>
 									<p className='mb-0'>
-										La société OutiBois a été crée en 1990,
-										spécialiste et leader dans la vente,
-										réparation des machines a bois et
-										outillages industriels neuf et occasion.
-										La société OutiBois vous offre une large
-										gamme de produit exposé sur plus de
-										1000m². Fort de notre expérience de plus
-										de 40 ans dans la machinerie a bois,
-										Nous sommes a l’écoute de nos clients
-										.Nous leurs assurons bon conseils, la
-										vente, la livraison et le service après
-										vente.
+										follow us : <br/>
+									<b>
+										on social networks</b>
 									</p>
 								</div>
+								<div className='widget-social-icon pull-right text-right pull-none-xs'>
+									<a href='https://www.facebook.com/Outibois-102007439098989'>
+									
+										<i className='fa fa-facebook' />
+										<i className='fa fa-facebook' />
+									</a>
+									<a href="">
+										<i className='fa fa-google-plus' />
+										<i className='fa fa-google-plus' />
+									</a>
+								
+									
+								</div>
 							</div>
-						</div> */}
-          </div>
-          <div className="map-section">
-            <h5 className="text-capitalize text-white">Visiter nous</h5>
-            <Map location={location} zoomLevel={16} />
-          </div>
-        </div>
-        {/* Social bar============================================= */}
-        <div className="widget-social">
-          <div className="container">
-            <div className="row">
-              <div className="col-xs-12 col-sm-12 col-md-6 mb-30-xs mb-30-sm">
-                <div className="widget-social-info pull-left text-capitalize pull-none-xs mb-15-xs">
-                  <p className="mb-0">
-                    follow us
-                    <br />
-                    on social networks
-                  </p>
-                </div>
-                <div className="widget-social-icon pull-right text-right pull-none-xs">
-                  <a>
-                    <i className="fa fa-facebook" />
-                    <i className="fa fa-facebook" />
-                  </a>
-                  <a>
-                    <i className="fa fa-google-plus" />
-                    <i className="fa fa-google-plus" />
-                  </a>
-                  <a>
-                    <i className="fa fa-twitter" />
-                    <i className="fa fa-twitter" />
-                  </a>
-                  <a>
-                    <i className="fa fa-linkedin" />
-                    <i className="fa fa-linkedin" />
-                  </a>
-                </div>
-              </div>
-              <div className="col-xs-12 col-sm-12 col-md-6"></div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+							<div className='col-xs-12 col-sm-12 col-md-6'></div>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	);
 }
 
 export default Home;
