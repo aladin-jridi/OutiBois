@@ -1,0 +1,18 @@
+#display-none {
+	display: none;
+}
+
+.cart-icon {
+	margin-top: -9vw !important;
+}
+
+.shop-logo {
+	margin-right: -3vw;
+}
+.client-info-user {
+	margin-top: -2vw;
+}
+
+.shop-card-btn {
+	width: 8vw;
+}

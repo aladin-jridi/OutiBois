@@ -1,0 +1,95 @@
+#machine-card-back {
+  background: rgba(12, 7, 1, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(0, 1, 8, 0.37);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  width: 76vw;
+  height: 40vw;
+}
+
+.machine-card-disdplay {
+  position: absolute;
+  position: fixed;
+  top: 15%;
+  z-index: 999;
+  margin-left: 3vw;
+}
+
+@media (max-width: 1800px) {
+}
+
+@media (max-width: 320px) {
+}
+
+.machine-card-none {
+  display: none;
+}
+
+.close-machien-card-icon {
+  width: 40px;
+  height: 40px;
+  float: right;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.close-machien-card-icon:hover {
+  border: solid 2px #f8be20;
+  border-radius: 50%;
+}
+
+.machine-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+  margin-top: 5vw;
+  margin-left: 2vw;
+  margin-right: 2vw;
+}
+.machine-card-image {
+  height: 30vw;
+  width: 40vw;
+}
+
+.machine-card-name {
+  color: #f8be20;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.machine-card-discription {
+  font-size: 5vw;
+  overflow: auto;
+  max-height: 25vw;
+}
+
+.machine-card-discription p {
+  color: #fff;
+}
+
+.carrouselle-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.arrow-icon {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+}
+
+.arrow-box {
+  height: 30vw;
+  display: flex;
+  align-items: center;
+}
+.arrow-box:hover {
+  background: rgba(220, 208, 41, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
