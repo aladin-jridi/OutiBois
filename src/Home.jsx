@@ -39,6 +39,7 @@ function Home() {
     for (var i = 0; i < newMachines.length; i++) {
       if (
         newMachines[i].name.includes(searchText) ||
+        newMachines[i].name.toUpperCase().includes(searchText) ||
         newMachines[i].name.includes(searchText.toUpperCase())
       ) {
         arr.push(newMachines[i]);
@@ -47,6 +48,7 @@ function Home() {
     for (var i = 0; i < oldMachines.length; i++) {
       if (
         oldMachines[i].name.includes(searchText) ||
+        newMachines[i].name.toUpperCase().includes(searchText) ||
         oldMachines[i].name.includes(searchText.toUpperCase())
       ) {
         arr.push(oldMachines[i]);
@@ -55,6 +57,7 @@ function Home() {
     for (var i = 0; i < accessoires.length; i++) {
       if (
         accessoires[i].name.includes(searchText) ||
+        newMachines[i].name.toUpperCase().includes(searchText) ||
         accessoires[i].name.includes(searchText.toUpperCase())
       ) {
         arr.push(accessoires[i]);
@@ -63,6 +66,7 @@ function Home() {
     for (var i = 0; i < enPromotion.length; i++) {
       if (
         enPromotion[i].name.includes(searchText) ||
+        newMachines[i].name.toUpperCase().includes(searchText) ||
         enPromotion[i].name.includes(searchText.toUpperCase())
       ) {
         arr.push(enPromotion[i]);
@@ -80,25 +84,19 @@ function Home() {
         setdisplayedArray(data);
       })
       .then(() => {
-        axios
-          .get("/api/oldMachine/findAll")
-          .then(({ data }) => {
-            setoldMachines(data);
-          });
+        axios.get("/api/oldMachine/findAll").then(({ data }) => {
+          setoldMachines(data);
+        });
       })
       .then(() => {
-        axios
-          .get("/api/accessoire/findAll")
-          .then(({ data }) => {
-            setaccessoires(data);
-          });
+        axios.get("/api/accessoire/findAll").then(({ data }) => {
+          setaccessoires(data);
+        });
       })
       .then(() => {
-        axios
-          .get("/api/enPromotion/findAll")
-          .then(({ data }) => {
-            setenPromotion(data);
-          });
+        axios.get("/api/enPromotion/findAll").then(({ data }) => {
+          setenPromotion(data);
+        });
       })
       .catch((err) => console.log(err));
   };
@@ -122,7 +120,7 @@ function Home() {
         arrows: {
           style: "arrow",
           enable: true,
-          hide_onmobile: true,
+          hide_onmobile: false,
           hide_onleave: false,
           tmp: "",
           left: {
@@ -805,7 +803,7 @@ function Home() {
                 className="form-control"
                 placeholder="Trouvez une machine"
               />
-              <button className="btn btn-warning" onClick={filter}>
+              <button className="btn btn-warning" id="searchBTN" onClick={filter}>
                 Search
               </button>
             </div>

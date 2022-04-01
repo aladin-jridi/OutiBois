@@ -1,18 +1,19 @@
 #display-none {
-	display: none;
+  display: none;
 }
 
 .cart-icon {
-	margin-top: -9vw !important;
+  margin-top: -9vw !important;
 }
 
 .shop-logo {
-	margin-right: -3vw;
+  margin-right: -3vw;
+  margin-left: 80vw;
 }
 .client-info-user {
-	margin-top: -2vw;
+  margin-top: -2vw;
 }
 
 .shop-card-btn {
-	width: 8vw;
+  width: 8vw;
 }
