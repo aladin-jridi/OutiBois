@@ -74,10 +74,25 @@
   margin-left: 8vw;
 }
 
-.info-section-map-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@media screen and (min-width: 600px) {
+  .info-section-map-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .info-section-map-section {
+    align-items: center;
+    justify-content: center;
+    margin-left: 8%;
+  }
+}
+
+.prodItem {
+  width: 250px !important;
+  height: 250px !important;
 }
 
 #textmap {
@@ -136,4 +151,7 @@
 }
 #searchBTN {
   width: 25% !important;
+}
+.outieboisLogo {
+  cursor: pointer;
 }
