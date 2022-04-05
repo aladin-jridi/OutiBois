@@ -48,6 +48,7 @@
   font-size: large;
 }
 
+
 #homeOutibois {
   color: #f8be20 !important;
   font-size: larger;
@@ -122,12 +123,13 @@
   top: 5px;
   right: 5px;
   height: 40px;
-  width: 10vw;
+  width: 18vw;
   background: #f8be20;
 }
 .searshbar {
   margin-bottom: -8vw;
   margin-left: 15%;
+
   max-width: 70%;
   overflow-x: hidden;
 }
