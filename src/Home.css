@@ -16,17 +16,20 @@
 }
 
 .logo img {
-  margin-top: -1.5vw;
+  margin-top: -3vw;
   margin-right: 90vw;
   margin-left: -4vw;
-  height: 8vw;
-  width: 17vw;
+  /* height: 7vw;
+  width: 15vw; */
+  height: 10%;
+  width: 20%;
 }
 
 #primary-menu {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 11%;
 }
 
 .down-arrow-show-card {
@@ -72,10 +75,25 @@
   margin-left: 8vw;
 }
 
-.info-section-map-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@media screen and (min-width: 600px) {
+  .info-section-map-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .info-section-map-section {
+    align-items: center;
+    justify-content: center;
+    margin-left: 8%;
+  }
+}
+
+.prodItem {
+  width: 250px !important;
+  height: 250px !important;
 }
 
 #textmap {
@@ -132,4 +150,10 @@
 
   max-width: 70%;
   overflow-x: hidden;
+}
+#searchBTN {
+  width: 25% !important;
+}
+.outieboisLogo {
+  cursor: pointer;
 }

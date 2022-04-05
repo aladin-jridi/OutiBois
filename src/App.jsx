@@ -6,15 +6,15 @@ import Home from "./Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path='/admin' element={<AdminLogin />}></Route>
-				<Route path='/Admindash' element={<AdminDADH />}></Route>
-				<Route path='/' element={<Home />}></Route>
-			</Routes>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/admin" element={<AdminLogin />}></Route>
+        <Route path="/Admindash" element={<AdminDADH />}></Route>
+        <Route path="/" element={<Home />}></Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
