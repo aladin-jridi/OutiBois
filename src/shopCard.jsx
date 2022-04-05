@@ -29,9 +29,8 @@ const ShopCard = ({ shopcard, removeFromCard }) => {
 
   return (
     <div className="module module-cart pull-left">
-      <div>
+      <div className="cart-icon shop-icon">
         <i className="fa fa-shopping-cart shop-logo" />
-        {/* <span className='title'>shop cart</span> */}
         <span className="cart-label">{shopcard.length}</span>
       </div>
       <div className="cart-box" id={toggleIdShopCard}>
