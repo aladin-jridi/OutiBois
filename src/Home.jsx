@@ -1084,7 +1084,7 @@ function Home() {
                     <b>on social networks</b>
                   </p>
                 </div>
-                <div className="widget-social-icon pull-right text-right pull-none-xs">
+                <div className="widget-social-icon pull-right text-right pull-none-xs" id="SMicons">
                   <a href="https://www.facebook.com/Outibois-102007439098989">
                     <i className="fa fa-facebook" />
                     <i className="fa fa-facebook" />
