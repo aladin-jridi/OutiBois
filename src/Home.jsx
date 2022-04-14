@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Image } from "cloudinary-react";
 import "./Home.css";
@@ -10,9 +10,18 @@ function Home() {
 	const [newMachines, setnewMachines] = useState([]);
 	const [oldMachines, setoldMachines] = useState([]);
 	const [accessoires, setaccessoires] = useState([]);
+	const [enPromotion, setenPromotion] = useState([]);
 	const [current, setcurrent] = useState([]);
 	const [shopcard, setshopcard] = useState([]);
+	const [displayedArray, setdisplayedArray] = useState([]);
 	const [displayCard, setdisplayCard] = useState("machine-card-none");
+	const [searchText, setsearchText] = useState("");
+	const [active, setactive] = useState({
+		filter1: "notHovered",
+		filter2: "notHovered",
+		filter3: "notHovered",
+		filter4: "notHovered",
+	});
 	const [currentMachine, setcurrentMachine] = useState({
 		image: "",
 		name: "",
@@ -25,27 +34,69 @@ function Home() {
 		lng: 10.212167,
 	};
 
+	const filter = () => {
+		var arr = [];
+		for (var i = 0; i < newMachines.length; i++) {
+			if (
+				newMachines[i].name.includes(searchText) ||
+				newMachines[i].name.toUpperCase().includes(searchText) ||
+				newMachines[i].name.includes(searchText.toUpperCase())
+			) {
+				arr.push(newMachines[i]);
+			}
+		}
+		for (var i = 0; i < oldMachines.length; i++) {
+			if (
+				oldMachines[i].name.includes(searchText) ||
+				newMachines[i].name.toUpperCase().includes(searchText) ||
+				oldMachines[i].name.includes(searchText.toUpperCase())
+			) {
+				arr.push(oldMachines[i]);
+			}
+		}
+		for (var i = 0; i < accessoires.length; i++) {
+			if (
+				accessoires[i].name.includes(searchText) ||
+				newMachines[i].name.toUpperCase().includes(searchText) ||
+				accessoires[i].name.includes(searchText.toUpperCase())
+			) {
+				arr.push(accessoires[i]);
+			}
+		}
+		for (var i = 0; i < enPromotion.length; i++) {
+			if (
+				enPromotion[i].name.includes(searchText) ||
+				newMachines[i].name.toUpperCase().includes(searchText) ||
+				enPromotion[i].name.includes(searchText.toUpperCase())
+			) {
+				arr.push(enPromotion[i]);
+			}
+		}
+		setcurrent(arr);
+	};
+
 	const fetchdata = () => {
 		axios
-			.get("http://localhost:5000/api/newMachine/findAll")
+			.get("/api/newMachine/findAll")
 			.then(({ data }) => {
-				// console.log(data);
 				setnewMachines(data);
-				setcurrent(data);
+				setcurrent(data.slice(0, 12));
+				setdisplayedArray(data);
 			})
 			.then(() => {
-				axios
-					.get("http://localhost:5000/api/oldMachine/findAll")
-					.then(({ data }) => {
-						setoldMachines(data);
-					});
+				axios.get("/api/oldMachine/findAll").then(({ data }) => {
+					setoldMachines(data);
+				});
 			})
 			.then(() => {
-				axios
-					.get("http://localhost:5000/api/accessoire/findAll")
-					.then(({ data }) => {
-						setaccessoires(data);
-					});
+				axios.get("/api/accessoire/findAll").then(({ data }) => {
+					setaccessoires(data);
+				});
+			})
+			.then(() => {
+				axios.get("/api/enPromotion/findAll").then(({ data }) => {
+					setenPromotion(data);
+				});
 			})
 			.catch((err) => console.log(err));
 	};
@@ -69,7 +120,7 @@ function Home() {
 				arrows: {
 					style: "arrow",
 					enable: true,
-					hide_onmobile: true,
+					hide_onmobile: false,
 					hide_onleave: false,
 					tmp: "",
 					left: {
@@ -93,14 +144,14 @@ function Home() {
 
 	const addToCard = (item) => {
 		setshopcard([...shopcard, item]);
-		// console.log(shopcard);
 	};
 
 	const removeFromCard = (item) => {
 		let card = shopcard.filter((ele) => ele._id !== item._id);
 		setshopcard(card);
-		// console.log(shopcard);
 	};
+
+	const [showCardShop, setshowCardShop] = useState(false);
 
 	return (
 		<div className='App'>
@@ -112,50 +163,37 @@ function Home() {
 				</div>
 			</div>
 			<header id='navbar-spy' className='transparent-header'>
-				<nav
-					id='primary-menu'
-					className='navbar navbar-fixed-top style-1'
-				>
-					<div className='container'>
-						{/* Brand and toggle get grouped for better mobile display */}
-						<div className='navbar-header'>
-							{/* <button
-								type='button'
-								className='navbar-toggle collapsed'
-								data-toggle='collapse'
-								data-target='#bs-example-navbar-collapse-1'
-								aria-expanded='false'
-							>
-								<span className='sr-only'>
-									Toggle navigation
-								</span>
-								<span className='icon-bar' />
-								<span className='icon-bar' />
-								<span className='icon-bar' />
-							</button> */}
-							<a className='logo'>
-								<img
-									src='https://cdn.discordapp.com/attachments/902991650727538769/949754407799623721/white.png'
-									alt='OutiBois'
-								/>
-							</a>
-						</div>
-						{/* Collect the nav links, forms, and other content for toggling */}
-						<div
-							className='collapse navbar-collapse pull-right'
-							id='bs-example-navbar-collapse-1'
-						>
-							{/* .module-cart */}
-							<ShopCard
-								shopcard={shopcard}
-								removeFromCard={removeFromCard}
-							/>
-							{/* .module-cart end */}
-						</div>
-						{/* /.navbar-collapse */}
+				<nav id='primary-menu' className='navbar navbar-fixed-top'>
+					{/* <div className='container navbar-logo-shop-card'> */}
+					<img
+						src='https://cdn.discordapp.com/attachments/902991650727538769/949754407799623721/white.png'
+						alt='OutiBois'
+						className='outieboisLogo'
+					/>
+					<div
+						className='cardIconAndNumber'
+						onClick={() => {
+							setshowCardShop(!showCardShop);
+						}}
+					>
+						<img
+							width='30'
+							height='30'
+							src='https://cdn-icons-png.flaticon.com/512/4297/4297019.png'
+							alt=''
+							title=''
+							className='loaded'
+						></img>
+						<span className='cart-label'>{shopcard.length}</span>
 					</div>
-					{/* /.container-fluid */}
 				</nav>
+				{showCardShop && (
+					<ShopCard
+						setshowCardShop={setshowCardShop}
+						shopcard={shopcard}
+						removeFromCard={removeFromCard}
+					/>
+				)}
 			</header>
 			{/* Hero Section============================================= */}
 			<section id='hero' className='hero hero-4'>
@@ -773,34 +811,117 @@ function Home() {
 				</div>
 				{/* END OF SLIDER WRAPPER */}
 			</section>
-			{/* #hero end */}
-			{/* Shop Filter============================================= */}
+			{/* searsh bar starts from here */}
+			<div className='searshbar'>
+				<div className='row height d-flex justify-content-center align-items-center'>
+					<div className='col-md-8'>
+						<div className='search'>
+							<i className='fa fa-search'></i>
+							<input
+								onChange={(e) => setsearchText(e.target.value)}
+								type='text'
+								className='form-control'
+								placeholder='Trouvez une machine'
+							/>
+							<button
+								className='btn btn-warning'
+								id='searchBTN'
+								onClick={filter}
+							>
+								Search
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/* searsh bar ends here */}
 			<section id='shop' className='shop-4 pt-0'>
 				<div className='container'>
 					<div className='row'>
 						{/* Projects Filter============================================= */}
 						<div className='col-xs-12 col-sm-12 col-md-12 shop-filter'>
 							<ul className='list-inline'>
-								<li onClick={() => setcurrent(newMachines)}>
+								<li
+									id='homeNav'
+									onClick={() => {
+										setcurrent(newMachines.slice(0, 12));
+										setdisplayedArray(newMachines);
+										setactive({
+											filter1: "active-filter",
+											filter2: "notHovered",
+											filter3: "notHovered",
+											filter4: "notHovered",
+										});
+									}}
+								>
 									<a
-										className='active-filter'
+										className={active.filter1}
 										data-filter='*'
+										id='pointer'
 									>
 										Nouvelle Machine
 									</a>
 								</li>
-								<li onClick={() => setcurrent(oldMachines)}>
-									<a data-filter='.filter-best'>
+								<li
+									id='homeNav'
+									onClick={() => {
+										setcurrent(oldMachines.slice(0, 12));
+										setdisplayedArray(oldMachines);
+										setactive({
+											filter1: "notHovered",
+											filter2: "active-filter",
+											filter3: "notHovered",
+											filter4: "notHovered",
+										});
+									}}
+								>
+									<a
+										className={active.filter2}
+										data-filter='.filter-best'
+										id='pointer'
+									>
 										Ancienne Machine
 									</a>
 								</li>
-								<li onClick={() => setcurrent(accessoires)}>
-									<a data-filter='.filter-featured'>
+								<li
+									id='homeNav'
+									onClick={() => {
+										setcurrent(accessoires.slice(0, 12));
+										setdisplayedArray(accessoires);
+										setactive({
+											filter1: "notHovered",
+											filter2: "notHovered",
+											filter3: "active-filter",
+											filter4: "notHovered",
+										});
+									}}
+								>
+									<a
+										className={active.filter3}
+										data-filter='.filter-featured'
+										id='pointer'
+									>
 										Outiage
 									</a>
 								</li>
-								<li>
-									<a data-filter='.filter-sale'>
+								<li
+									id='homeNav'
+									onClick={() => {
+										setcurrent(enPromotion.slice(0, 12));
+										setdisplayedArray(enPromotion);
+										setactive({
+											filter1: "notHovered",
+											filter2: "notHovered",
+											filter3: "notHovered",
+											filter4: "active-filter",
+										});
+									}}
+								>
+									<a
+										className={active.filter4}
+										data-filter='.filter-sale'
+										id='pointer'
+									>
 										En Promotion
 									</a>
 								</li>
@@ -819,7 +940,7 @@ function Home() {
 							>
 								<div className='product-img'>
 									<Image
-										className='cloudinary-img'
+										className='cloudinary-img prodItem'
 										cloudName='outibois'
 										public_id={machine.image[0]}
 									/>
@@ -853,13 +974,12 @@ function Home() {
 									loading='lazy'
 									muted='muted'
 									src='https://cdnl.iconscout.com/lottie/premium/thumb/down-arrow-5016011-4171811.mp4'
-									width='25'
-									height='25'
+									width='30'
+									height='30'
 									type='video/mp4'
 									autoPlay='autoPlay'
 									loop='loop'
 								></video>
-								{/* .product-bio end */}
 							</div>
 						))}
 						<MachineCard
@@ -870,10 +990,14 @@ function Home() {
 						{/* .product-item end */}
 					</div>
 					{/* .row end */}
-					<div className='row'>
+					<div
+						className='row'
+						onClick={() => setcurrent(displayedArray)}
+						id='pointer'
+					>
 						<div className='col-xs-12 col-sm-12 col-md-12 text-center'>
 							<a className='btn btn-secondary' id='moreProducts'>
-								more products <i className='fa fa-plus ml-xs' />
+								Afficher plus <i className='fa fa-plus ml-xs' />
 							</a>
 						</div>
 						{/* .col-md-12 end */}
@@ -885,94 +1009,7 @@ function Home() {
 			{/* Testimonials #1============================================= */}
 			{/* #testimonials end */}
 			{/* Shortcode #9 ============================================= */}
-			<section id='clients' className='shortcode-9'>
-				<div className='container'>
-					<div className='row'>
-						<div className='col-xs-12 col-sm-12 col-md-12'>
-							<div className='heading heading-2 text-center'>
-								<div className='heading-bg'>
-									<p className='mb-0'>They Always Trust Us</p>
-									<h2>Our Clients</h2>
-								</div>
-							</div>
-							{/* .heading end */}
-						</div>
-						{/* .col-md-12 end */}
-					</div>
-					{/* .row end */}
-					<div className='row'>
-						{/* Client Item */}
-						<div className='col-xs-12 col-sm-4 col-md-2'>
-							<div className='brand'>
-								<img
-									className='img-responsive center-block'
-									src='src/assets/images/clients/1.png'
-									alt='brand'
-								/>
-							</div>
-						</div>
-						{/* .col-md-2 end */}
-						{/* Client Item */}
-						<div className='col-xs-12 col-sm-4 col-md-2'>
-							<div className='brand'>
-								<img
-									className='img-responsive center-block'
-									src='src/assets/images/clients/2.png'
-									alt='brand'
-								/>
-							</div>
-						</div>
-						{/* .col-md-2 end */}
-						{/* Client Item */}
-						<div className='col-xs-12 col-sm-4 col-md-2'>
-							<div className='brand'>
-								<img
-									className='img-responsive center-block'
-									src='src/assets/images/clients/3.png'
-									alt='brand'
-								/>
-							</div>
-						</div>
-						{/* .col-md-2 end */}
-						{/* Client Item */}
-						<div className='col-xs-12 col-sm-4 col-md-2'>
-							<div className='brand'>
-								<img
-									className='img-responsive center-block'
-									src='src/assets/images/clients/4.png'
-									alt='brand'
-								/>
-							</div>
-						</div>
-						{/* .col-md-2 end */}
-						{/* Client Item */}
-						<div className='col-xs-12 col-sm-4 col-md-2'>
-							<div className='brand'>
-								<img
-									className='img-responsive center-block'
-									src='src/assets/images/clients/5.png'
-									alt='brand'
-								/>
-							</div>
-						</div>
-						{/* .col-md-2 end */}
-						{/* Client Item */}
-						<div className='col-xs-12 col-sm-4 col-md-2'>
-							<div className='brand last'>
-								<img
-									className='img-responsive center-block'
-									src='src/assets/images/clients/6.png'
-									alt='brand'
-								/>
-							</div>
-						</div>
-						{/* .col-md-2 end */}
-					</div>
-					{/* .row End */}
-				</div>
-				{/* .container end */}
-			</section>
-			{/* #clients end*/}
+
 			<footer id='footer' className='footer-1'>
 				{/* Contact Bar============================================= */}
 				<div className='container footer-widgtes'>
@@ -1006,7 +1043,7 @@ function Home() {
 											<p className='text-capitalize text-white'>
 												envoyez-nous un e-mail
 											</p>
-											<p className='text-capitalize font-heading'>
+											<p className=' font-heading'>
 												outiboistun@yahoo.com
 											</p>
 										</div>
@@ -1053,52 +1090,26 @@ function Home() {
 						/>
 					</div> */}
 					<div className='row'>
-						<div className='widget-about-info'>
+						<div className='widget-about-info' id='textmap'>
 							<h5 className='text-capitalize text-white'>
 								OUTIBOIS
 							</h5>
-							<p className='mb-0'>
-								La société OutiBois a été crée en 1990,
-								spécialiste et leader dans la vente, réparation
-								des machines a bois et outillages industriels
-								neuf et occasion. La société OutiBois vous offre
-								une large gamme de produit exposé sur plus de
-								1000m². Fort de notre expérience de plus de 40
-								ans dans la machinerie a bois, Nous sommes a
-								l’écoute de nos clients .Nous leurs assurons bon
-								conseils, la vente, la livraison et le service
-								après vente.
-							</p>
+							<h4>
+								<p className='mb-0'>
+									La société OutiBois a été crée en 2002,
+									spécialiste et leader dans la vente,
+									réparation des machines a bois et outillages
+									industriels neuf et occasion. La société
+									OutiBois vous offre une large gamme de
+									produit exposé sur plus de 1000m². Fort de
+									notre expérience de plus de 40 ans dans la
+									machinerie a bois, Nous sommes a l’écoute de
+									nos clients .Nous leurs assurons bon
+									conseils, la vente, la livraison et le
+									service après vente.
+								</p>
+							</h4>
 						</div>
-						{/* <div className='col-xs-12 col-sm-12 col-md-12 widgets-links'>
-							<div className='col-xs-12 col-sm-12 col-md-4 widget-about text-center-xs mb-30-xs'>
-								<div className='widget-about-logo pull-left pull-none-xs'>
-									<img
-										src='src/assets/images/footer-logo.png'
-										alt='logo'
-									/>
-								</div>
-								<div className='widget-about-info'>
-									<h5 className='text-capitalize text-white'>
-										OUTIBOIS
-									</h5>
-									<p className='mb-0'>
-										La société OutiBois a été crée en 1990,
-										spécialiste et leader dans la vente,
-										réparation des machines a bois et
-										outillages industriels neuf et occasion.
-										La société OutiBois vous offre une large
-										gamme de produit exposé sur plus de
-										1000m². Fort de notre expérience de plus
-										de 40 ans dans la machinerie a bois,
-										Nous sommes a l’écoute de nos clients
-										.Nous leurs assurons bon conseils, la
-										vente, la livraison et le service après
-										vente.
-									</p>
-								</div>
-							</div>
-						</div> */}
 					</div>
 					<div className='map-section'>
 						<h5 className='text-capitalize text-white'>
@@ -1114,78 +1125,28 @@ function Home() {
 							<div className='col-xs-12 col-sm-12 col-md-6 mb-30-xs mb-30-sm'>
 								<div className='widget-social-info pull-left text-capitalize pull-none-xs mb-15-xs'>
 									<p className='mb-0'>
-										follow us
-										<br />
-										on social networks
+										follow us : <br />
+										<b>on social networks</b>
 									</p>
 								</div>
-								<div className='widget-social-icon pull-right text-right pull-none-xs'>
-									<a>
+								<div
+									className='widget-social-icon pull-right text-right pull-none-xs'
+									id='SMicons'
+								>
+									<a
+										target='_blank'
+										href='https://www.facebook.com/Outibois-102007439098989'
+									>
 										<i className='fa fa-facebook' />
 										<i className='fa fa-facebook' />
 									</a>
-									<a>
+									<a href=''>
 										<i className='fa fa-google-plus' />
 										<i className='fa fa-google-plus' />
 									</a>
-									<a>
-										<i className='fa fa-twitter' />
-										<i className='fa fa-twitter' />
-									</a>
-									<a>
-										<i className='fa fa-linkedin' />
-										<i className='fa fa-linkedin' />
-									</a>
-									<a>
-										<i className='fa fa-vimeo-square' />
-										<i className='fa fa-vimeo-square' />
-									</a>
-									<a>
-										<i className='fa fa-pinterest' />
-										<i className='fa fa-pinterest' />
-									</a>
-									<a>
-										<i className='fa fa-flickr' />
-										<i className='fa fa-flickr' />
-									</a>
-									<a>
-										<i className='fa fa-rss' />
-										<i className='fa fa-rss' />
-									</a>
 								</div>
 							</div>
-							<div className='col-xs-12 col-sm-12 col-md-6'>
-								<div className='widget-newsletter-info pull-left text-capitalize pull-none-xs mb-15-xs'>
-									<p className='mb-0'>
-										subsribe
-										<br />
-										on our newsletter
-									</p>
-								</div>
-								<div className='widget-newsletter-form pull-right text-right'>
-									{/* Mailchimp Form =============================================*/}
-									<form className='mailchimp'>
-										<div className='subscribe-alert'></div>
-										<div className='input-group'>
-											<input
-												type='text'
-												className='form-control'
-												placeholder='Type Your Email Account'
-											/>
-											<span className='input-group-btn'>
-												<button
-													className='btn text-capitalize'
-													type='button'
-												>
-													join
-												</button>
-											</span>
-										</div>
-										{/* /input-group */}
-									</form>
-									{/*Mailchimp Form End*/}
-								</div>
-							</div>
+							<div className='col-xs-12 col-sm-12 col-md-6'></div>
 						</div>
 					</div>
 				</div>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Image } from "cloudinary-react";
 import "./shopCard.css";
 
-const ShopCard = ({ shopcard, removeFromCard }) => {
+const ShopCard = ({ shopcard, removeFromCard, setshowCardShop }) => {
 	const [toggleIdShopCard, settoggleIdShopCard] = useState("");
 	const [toggleIdForm, settoggleIdForm] = useState("display-none");
 	const [nom, setnom] = useState("");
@@ -13,6 +13,7 @@ const ShopCard = ({ shopcard, removeFromCard }) => {
 	const [domaine, setdomaine] = useState("");
 
 	const submitDevis = () => {
+		setshowCardShop(false);
 		let devis = {
 			nom,
 			email,
@@ -22,18 +23,16 @@ const ShopCard = ({ shopcard, removeFromCard }) => {
 			machines: shopcard.map((item) => item.name),
 		};
 		axios
-			.post("http://localhost:5000/api/devit/adddevit", devis)
-			.then(({ data }) => console.log(data))
+			.post("/api/devit/adddevit", devis)
+			.then(({ data }) => {
+				alert("Votre demande de devis a été envoyer avec succéss");
+				console.log(data);
+			})
 			.catch((err) => console.log(err));
 	};
 
 	return (
-		<div className='module module-cart pull-left'>
-			<div className='cart-icon shop-icon'>
-				<i className='fa fa-shopping-cart shop-logo' />
-				{/* <span className='title'>shop cart</span> */}
-				<span className='cart-label'>{shopcard.length}</span>
-			</div>
+		<div className='shopCardContainer'>
 			<div className='cart-box' id={toggleIdShopCard}>
 				<div className='cart-overview'>
 					<ul className='list-unstyled'>
@@ -118,13 +117,13 @@ const ShopCard = ({ shopcard, removeFromCard }) => {
 				</div>
 				<div className='client-info-user'>
 					<button
-						className='btn btn-secondary pull-left shop-card-btn'
+						className='btn btn-secondary pull-left shop-card-btn shopCardBtn'
 						onClick={submitDevis}
 					>
 						Confirmer
 					</button>
 					<button
-						className='btn btn-secondary pull-right shop-card-btn'
+						className='btn btn-secondary pull-right shop-card-btn shopCardBtn'
 						onClick={() => {
 							settoggleIdShopCard("");
 							settoggleIdForm("display-none");

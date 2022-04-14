@@ -1075,6 +1075,7 @@ footer {
   height: 51px;
   text-align: center;
   font-family: "Montserrat", sans-serif;
+  /* align-items: center; */
 }
 
 .btn-primary {

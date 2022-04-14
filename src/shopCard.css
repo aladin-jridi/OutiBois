@@ -2,6 +2,10 @@
 	display: none;
 }
 
+.cart-icon {
+	margin-top: -9vw !important;
+}
+
 .shop-logo {
 	margin-right: -3vw;
 }
@@ -10,5 +14,77 @@
 }
 
 .shop-card-btn {
-	width: 10vw;
+	width: 8vw;
+}
+.shopCardContainer {
+	background-color: #2e2e2e;
+	padding: 20px;
+	position: fixed;
+	z-index: 10;
+	left: 75%;
+	margin-top: 8vw;
+	width: 320px;
+}
+
+@media screen and (max-width: 1200px) {
+	.shopCardContainer {
+		margin-top: 10vw;
+		left: 70%;
+	}
+	.shopCardBtn {
+		width: 110px;
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	.shopCardContainer {
+		margin-top: 12vw;
+		left: 65%;
+	}
+}
+
+@media screen and (max-width: 880px) {
+	.shopCardContainer {
+		margin-top: 12vw;
+		left: 60%;
+	}
+}
+
+@media screen and (max-width: 780px) {
+	.shopCardContainer {
+		margin-top: 14vw;
+		left: 55%;
+	}
+}
+
+@media screen and (max-width: 690px) {
+	.shopCardContainer {
+		margin-top: 18vw;
+		left: 45%;
+	}
+}
+
+@media screen and (max-width: 570px) {
+	.shopCardContainer {
+		margin-top: 22vw;
+		left: 35%;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.shopCardContainer {
+		left: 25%;
+	}
+}
+
+@media screen and (max-width: 420px) {
+	.shopCardContainer {
+		left: 10%;
+	}
+}
+
+@media screen and (max-width: 360px) {
+	.shopCardContainer {
+		left: 3%;
+	}
 }

@@ -1,86 +1,160 @@
-#machine-card-back {
-	background: rgba(12, 7, 1, 0.5);
-	box-shadow: 0 8px 32px 0 rgba(0, 1, 8, 0.37);
-	backdrop-filter: blur(9px);
-	-webkit-backdrop-filter: blur(9px);
-	border: 1px solid rgba(255, 255, 255, 0.18);
-	width: 76vw;
-	height: 40vw;
+@media screen and (min-width: 600px) {
+  #machine-card-back {
+    background: rgba(12, 7, 1, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(0, 1, 8, 0.37);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 76vw;
+    height: 40vw;
+  }
+}
+@media screen and (max-width: 600px) {
+  #machine-card-back {
+    background: rgba(12, 7, 1, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(0, 1, 8, 0.37);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 85vw;
+    height: fit-content;
+    padding-bottom: 2%;
+    margin-left: 9vw;
+  }
 }
 
-.machine-card-disdplay {
-	position: absolute;
-	position: fixed;
-	top: 7vw;
-	z-index: 999;
-	margin-left: 3vw;
-}
 .machine-card-none {
-	display: none;
+  display: none;
 }
 
 .close-machien-card-icon {
-	width: 40px;
-	height: 40px;
-	float: right;
+  width: 40px;
+  height: 40px;
+  float: right;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .close-machien-card-icon:hover {
-	border: solid 2px #f8be20;
-	border-radius: 50%;
+  border: solid 2px #f8be20;
+  border-radius: 50%;
 }
 
-.machine-card {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 2vw;
-	margin-top: 5vw;
-	margin-left: 2vw;
-	margin-right: 2vw;
+@media screen and (min-width: 600px) {
+  .machine-card-disdplay {
+    position: absolute;
+    position: fixed;
+    top: 15%;
+    z-index: 999;
+    margin-left: 3vw;
+  }
 }
 
-.machine-card-image {
-	height: 30vw;
-	width: 40vw;
+@media screen and (max-width: 600px) {
+  .machine-card-disdplay {
+    position: absolute;
+    position: fixed;
+    top: 18%;
+    z-index: 9999;
+    margin-left: 15%;
+  }
 }
 
-.machine-card-name {
-	color: #f8be20;
-	font-size: x-large;
-	font-weight: bold;
+@media screen and (min-width: 600px) {
+  .machine-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2vw;
+    margin-top: 5vw;
+    margin-left: 2vw;
+    margin-right: 2vw;
+  }
+}
+@media screen and (max-width: 600px) {
+  .machine-card {
+    align-items: center;
+    justify-content: center;
+    gap: 2vw;
+    margin-top: 5vw;
+    margin-left: 2vw;
+    margin-right: 2vw;
+  }
 }
 
-.machine-card-discription {
-	font-size: medium;
-	overflow: auto;
-	max-height: 25vw;
+@media screen and (min-width: 600px) {
+  .machine-card-image {
+    height: 30vw;
+    width: 40vw;
+  }
+}
+@media screen and (max-width: 600px) {
+  .machine-card-image {
+    height: 50vw;
+    width: 55vw;
+    display: inline;
+    margin-bottom: 2%;
+  }
 }
 
-.machine-card-discription p {
-	color: #fff;
+@media screen and (min-width: 600px) {
+  .machine-card-name {
+    color: #f8be20;
+    font-size: 2vw;
+    font-weight: bold;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .machine-card-name {
+    color: #f8be20;
+    font-size: 4vw;
+    font-weight: bold;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .machine-card-discription {
+    font-size: 5vw;
+    overflow: auto;
+    max-height: 25vw;
+  }
+  .machine-card-discription p {
+    color: #fff;
+  }
+}
+@media screen and (max-width: 600px) {
+  .machine-card-discription {
+    font-size: 5vw;
+    overflow: auto;
+    max-height: 55vw;
+  }
+  .machine-card-discription p {
+    color: #fff;
+  }
 }
 
 .carrouselle-card {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .arrow-icon {
-	width: 3vw;
-	height: 3vw;
-	border-radius: 50%;
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
 }
 
 .arrow-box {
-	height: 30vw;
-	display: flex;
-	align-items: center;
+  height: 30vw;
+  display: flex;
+  align-items: center;
 }
 .arrow-box:hover {
-	background: rgba(220, 208, 41, 0.25);
-	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-	backdrop-filter: blur(4px);
-	-webkit-backdrop-filter: blur(4px);
+  background: rgba(220, 208, 41, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }

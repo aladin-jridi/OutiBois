@@ -13,7 +13,7 @@ module.exports = {
 				port: 465,
 				auth: {
 					user: "all.in.one.customer.services@gmail.com",
-					pass: "Azerty123+",
+					pass: "Aladin123+",
 				},
 			});
 			let machinesList = devit.machines.map(
@@ -21,7 +21,7 @@ module.exports = {
 			);
 			let mailOption = {
 				from: "all.in.one.customer.services@gmail.com",
-				to: "belguesmisakr@gmail.com",
+				to: "wael.ajabi@hotmail.fr",
 				subject: "Demmande de devis",
 				html: `<h3>Information du client</h3>
 				<ul>
