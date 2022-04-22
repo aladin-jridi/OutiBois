@@ -277,7 +277,7 @@ function AdminDADH() {
                         settoggleDevit(true);
                       }}
                     >
-                      Outiage
+                      Outillage
                     </p>
                     <p
                       id="adminNav"
